@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Bazydanych2017Application {
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(Bazydanych2017Application.class, args);
 	}
 }
