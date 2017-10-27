@@ -6,14 +6,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pl.edu.agh.bazydanych2017.dao.JdbcBazydanych2017Dao;
+import pl.edu.agh.bazydanych2017.dao.EmployeeDao;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class Bazydanych2017ApplicationTests {
 
 	@Autowired
-	private JdbcBazydanych2017Dao jdbcBazydanych2017Dao;
+	private EmployeeDao jdbcBazydanych2017Dao;
 
 	@Test
 	public void contextLoads() {
