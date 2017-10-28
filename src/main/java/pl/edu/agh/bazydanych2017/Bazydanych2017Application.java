@@ -20,6 +20,10 @@ public class Bazydanych2017Application implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		createEmployee();
+		getEmployeeById();
+		employeeDao.updateEmployeeEmailById(10, "Kraków");
+		employeeDao.deleteEmployeeById(12);
+		System.out.println("Employ last name - " + employeeDao.getEmployeeLastName(2));
 	}
 	private void createEmployee(){
 		Employees employees = new Employees();
@@ -29,5 +33,10 @@ public class Bazydanych2017Application implements CommandLineRunner {
 		employees.setSalary(9000.00);
 
 		employeeDao.createEmployee(employees);
+	}
+
+	private void getEmployeeById(){
+		Employees employees = employeeDao.getEmployeeById(1);
+		System.out.println(employees);
 	}
 }

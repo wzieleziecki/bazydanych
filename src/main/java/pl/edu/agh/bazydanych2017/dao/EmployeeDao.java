@@ -6,7 +6,7 @@ public interface EmployeeDao {
     String getEmployeeLastName(int employeeId);
     void createEmployee(Employees employees);
     Employees getEmployeeById(Integer employeeId);
-    void updateEmployeeEmailById(Integer employeeId, String employeeEmail);
+    void updateEmployeeEmailById(Integer employeeId, String city);
     void deleteEmployeeById(Integer employeeId);
 
 }

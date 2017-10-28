@@ -3,6 +3,7 @@ package pl.edu.agh.bazydanych2017.model;
 import java.util.Date;
 
 public class Employees {
+    private Integer employeeId;
     private String address;
     private Date birthDate;
     private String city;
@@ -19,6 +20,14 @@ public class Employees {
     private Double salary;
     private String title;
     private String titleOfCourtesy;
+
+    public Integer getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Integer employeeId) {
+        this.employeeId = employeeId;
+    }
 
     public String getAddress() {
         return address;
@@ -146,5 +155,28 @@ public class Employees {
 
     public void setTitleOfCourtesy(String titleOfCourtesy) {
         this.titleOfCourtesy = titleOfCourtesy;
+    }
+
+    @Override
+    public String toString() {
+        return "Employees{" +
+                "employeeId=" + employeeId +
+                ", address='" + address + '\'' +
+                ", birthDate=" + birthDate +
+                ", city='" + city + '\'' +
+                ", country='" + country + '\'' +
+                ", extension='" + extension + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", hireDate=" + hireDate +
+                ", homePhone='" + homePhone + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", notes='" + notes + '\'' +
+                ", postalCode='" + postalCode + '\'' +
+                ", region='" + region + '\'' +
+                ", reportsTo=" + reportsTo +
+                ", salary=" + salary +
+                ", title='" + title + '\'' +
+                ", titleOfCourtesy='" + titleOfCourtesy + '\'' +
+                '}';
     }
 }
