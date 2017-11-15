@@ -70,7 +70,7 @@ public class JdbcOrderDetailDao implements OrderDetailDao {
         jdbcTemplate.update(sql, orderDetail.getOrderId(), orderDetail.getProductId());
     }
 
-    public void deleteByOrderId(Long orderId) {
+    public void deleteByOrderId(long orderId) {
         String sql = "DELETE FROM `order details` WHERE OrderID = ?";
         jdbcTemplate.update(sql, orderId);
     }
