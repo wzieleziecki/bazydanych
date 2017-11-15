@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public abstract class AbstractDaoTest<DAO extends GenericCrudDao<T, PK>, T, PK extends Serializable> {
+public abstract class AbstractCrudDaoTest<DAO extends GenericCrudDao<T, PK>, T, PK extends Serializable> {
 
     DAO crudDao;
 

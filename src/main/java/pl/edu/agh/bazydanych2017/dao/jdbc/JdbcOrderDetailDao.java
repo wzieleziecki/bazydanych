@@ -8,6 +8,8 @@ import pl.edu.agh.bazydanych2017.dao.OrderDetailDao;
 import pl.edu.agh.bazydanych2017.model.OrderDetail;
 import pl.edu.agh.bazydanych2017.model.OrderDetailPK;
 
+import java.util.List;
+
 @Repository
 public class JdbcOrderDetailDao implements OrderDetailDao {
 
@@ -46,6 +48,11 @@ public class JdbcOrderDetailDao implements OrderDetailDao {
         return jdbcTemplate.queryForObject(sql, orderDetailRowMapper, pk.getOrderId(), pk.getProductId());
     }
 
+    public List<OrderDetail> findByOrderId(long orderId) {
+        String sql = "SELECT * FROM `order details` WHERE OrderID = ?";
+        return jdbcTemplate.query(sql, orderDetailRowMapper, orderId);
+    }
+
     @Override
     public OrderDetail update(OrderDetail orderDetail) {
         String sql = "UPDATE `order details` " +
@@ -61,5 +68,10 @@ public class JdbcOrderDetailDao implements OrderDetailDao {
     public void delete(OrderDetail orderDetail) {
         String sql = "DELETE FROM `order details` WHERE OrderID = ? AND ProductID = ?";
         jdbcTemplate.update(sql, orderDetail.getOrderId(), orderDetail.getProductId());
+    }
+
+    public void deleteByOrderId(Long orderId) {
+        String sql = "DELETE FROM `order details` WHERE OrderID = ?";
+        jdbcTemplate.update(sql, orderId);
     }
 }

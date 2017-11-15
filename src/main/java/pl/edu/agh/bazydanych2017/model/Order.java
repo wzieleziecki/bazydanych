@@ -25,7 +25,7 @@ public class Order {
 
     private Timestamp shippedDate;
 
-    private long shippedVia;
+    private long shipVia;
 
     private BigDecimal freight;
 

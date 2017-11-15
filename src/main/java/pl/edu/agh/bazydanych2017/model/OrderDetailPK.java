@@ -13,4 +13,10 @@ public class OrderDetailPK implements Serializable {
     @Id
     private long productId;
 
+    public static OrderDetailPK of(long orderId, long productId) {
+        OrderDetailPK orderDetailPK = new OrderDetailPK();
+        orderDetailPK.setOrderId(orderId);
+        orderDetailPK.setProductId(productId);
+        return orderDetailPK;
+    }
 }
