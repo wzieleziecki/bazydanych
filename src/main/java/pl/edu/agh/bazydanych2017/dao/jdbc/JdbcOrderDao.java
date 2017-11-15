@@ -5,14 +5,17 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import pl.edu.agh.bazydanych2017.dao.OrderDao;
+import pl.edu.agh.bazydanych2017.dao.OrderDetailDao;
 import pl.edu.agh.bazydanych2017.model.Order;
+
+import java.util.List;
 
 @Repository
 public class JdbcOrderDao implements OrderDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final JdbcOrderDetailDao jdbcOrderDetailDao;
+    private final OrderDetailDao orderDetailDao;
 
     private static final RowMapper<Order> orderRowMapper = (rs, rowNum) -> {
         Order order = new Order();
@@ -34,9 +37,9 @@ public class JdbcOrderDao implements OrderDao {
     };
 
     @Autowired
-    public JdbcOrderDao(JdbcTemplate jdbcTemplate, JdbcOrderDetailDao jdbcOrderDetailDao) {
+    public JdbcOrderDao(JdbcTemplate jdbcTemplate, JdbcOrderDetailDao orderDetailDao) {
         this.jdbcTemplate = jdbcTemplate;
-        this.jdbcOrderDetailDao = jdbcOrderDetailDao;
+        this.orderDetailDao = orderDetailDao;
     }
 
     @Override
@@ -64,6 +67,12 @@ public class JdbcOrderDao implements OrderDao {
     public Order read(Long id) {
         String sql = "SELECT * FROM orders WHERE OrderID = ?";
         return jdbcTemplate.queryForObject(sql, orderRowMapper, id);
+    }
+
+    @Override
+    public List<Order> findByCustomerId(String customerId) {
+        String sql = "SELECT * FROM orders WHERE CustomerID = ?";
+        return jdbcTemplate.query(sql, orderRowMapper, customerId);
     }
 
     @Override
@@ -103,8 +112,16 @@ public class JdbcOrderDao implements OrderDao {
 
     @Override
     public void delete(Order order) {
-        jdbcOrderDetailDao.deleteByOrderId(order.getOrderId());
+        orderDetailDao.deleteByOrderId(order.getOrderId());
         String sql = "DELETE FROM orders WHERE OrderID = ?";
         jdbcTemplate.update(sql, order.getOrderId());
+    }
+
+    @Override
+    public void deleteByCustomerId(String customerId) {
+        List<Order> ordersByCustomer = findByCustomerId(customerId);
+        ordersByCustomer.forEach(order -> orderDetailDao.deleteByOrderId(order.getOrderId()));
+        String sql = "DELETE FROM orders WHERE CustomerID = ?";
+        jdbcTemplate.update(sql, customerId);
     }
 }
