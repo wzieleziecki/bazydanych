@@ -1,15 +1,12 @@
 package pl.edu.agh.bazydanych2017.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class Products {
   @Id
+  @GeneratedValue
   private Long productid;
- // @Column(name = "ProductName")
   private String productname;
   private Long supplierid;
   @JoinColumn(name = "categoryid", referencedColumnName = "CategoryID")
@@ -20,7 +17,22 @@ public class Products {
   private Long unitsinstock;
   private Long unitsonorder;
   private Long reorderlevel;
-  private String discontinued;
+  private Boolean discontinued;
+
+  public Products() {
+  }
+
+  public Products(String productname, Long supplierid, Categories categoryid, String quantityperunit, Double unitprice, Long unitsinstock, Long unitsonorder, Long reorderlevel, Boolean discontinued) {
+    this.productname = productname;
+    this.supplierid = supplierid;
+    this.categoryid = categoryid;
+    this.quantityperunit = quantityperunit;
+    this.unitprice = unitprice;
+    this.unitsinstock = unitsinstock;
+    this.unitsonorder = unitsonorder;
+    this.reorderlevel = reorderlevel;
+    this.discontinued = discontinued;
+  }
 
   public Long getProductid() {
     return productid;
@@ -94,11 +106,11 @@ public class Products {
     this.reorderlevel = reorderlevel;
   }
 
-  public String getDiscontinued() {
+  public Boolean getDiscontinued() {
     return discontinued;
   }
 
-  public void setDiscontinued(String discontinued) {
+  public void setDiscontinued(Boolean discontinued) {
     this.discontinued = discontinued;
   }
 

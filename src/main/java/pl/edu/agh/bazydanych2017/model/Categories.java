@@ -6,9 +6,9 @@ import java.util.List;
 @Entity
 public class Categories {
   @Id
-  @Column(name = "CategoryID")
+  @GeneratedValue
+  //@Column(name = "CategoryID")
   private Long categoryid;
-  //@Column(name = "CategoryName")
   private String categoryname;
   private String description;
   private String picture;
@@ -22,6 +22,13 @@ public class Categories {
 
     public Categories() {
     }
+
+    public Categories(String categoryname, String description) {
+        this.categoryname = categoryname;
+        this.description = description;
+    }
+
+
 
     public Long getCategoryid() {
     return categoryid;
@@ -66,7 +73,7 @@ public class Categories {
     @Override
     public String toString() {
         return "Categories{" +
-                "categoryname='" + categoryname + '\'' +
+                "categoryid=" + categoryid +
                 '}';
     }
 
