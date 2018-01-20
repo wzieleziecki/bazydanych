@@ -8,7 +8,9 @@ public class Products {
   @GeneratedValue
   private Long productid;
   private String productname;
-  private Long supplierid;
+  @JoinColumn(name = "supplierid", referencedColumnName = "SupplierID")
+  @ManyToOne
+  private Suppliers supplierid;
   @JoinColumn(name = "categoryid", referencedColumnName = "CategoryID")
   @ManyToOne
   private Categories categoryid;
@@ -22,7 +24,7 @@ public class Products {
   public Products() {
   }
 
-  public Products(String productname, Long supplierid, Categories categoryid, String quantityperunit, Double unitprice, Long unitsinstock, Long unitsonorder, Long reorderlevel, Boolean discontinued) {
+  public Products(String productname, Suppliers supplierid, Categories categoryid, String quantityperunit, Double unitprice, Long unitsinstock, Long unitsonorder, Long reorderlevel, Boolean discontinued) {
     this.productname = productname;
     this.supplierid = supplierid;
     this.categoryid = categoryid;
@@ -50,11 +52,11 @@ public class Products {
     this.productname = productname;
   }
 
-  public Long getSupplierid() {
+  public Suppliers getSupplierid() {
     return supplierid;
   }
 
-  public void setSupplierid(Long supplierid) {
+  public void setSupplierid(Suppliers supplierid) {
     this.supplierid = supplierid;
   }
 

@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
-import pl.edu.agh.bazydanych2017.dao.JdbcDao;
-import pl.edu.agh.bazydanych2017.dao.JpaProductsDao;
+import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcProductsDao;
+import pl.edu.agh.bazydanych2017.dao.jpa.JpaProductsDao;
 import pl.edu.agh.bazydanych2017.model.Products;
 
 import java.util.List;
@@ -18,12 +18,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class Bazydanych2017ApplicationTests {
 
-	private  JdbcDao jdbcDao;
+	private JdbcProductsDao jdbcProductDao;
 	private  JpaProductsDao jpaProductsDao;
 
 	@Autowired
-	public void setJdbcProductsDao(JdbcDao jdbcDao) {
-		this.jdbcDao = jdbcDao;
+	public void setJdbcProductsDao(JdbcProductsDao jdbcProductDao) {
+		this.jdbcProductDao = jdbcProductDao;
 	}
 
 	@Autowired
@@ -39,7 +39,7 @@ public class Bazydanych2017ApplicationTests {
 	@Test
 	public void checkIfQueryFindByProductnameIsEqualsInJpaJdbc(){
 		//given
-		Products jdbcChai = jdbcDao.findByProductname("Chai");
+		Products jdbcChai = jdbcProductDao.findProductByProductName("Chai");
 		Products jpaChai = jpaProductsDao.findByProductname("Chai");
 		//then
 		assertThat(jdbcChai).isEqualTo(jpaChai);
@@ -48,7 +48,7 @@ public class Bazydanych2017ApplicationTests {
 	@Test
 	public void checkIfQueryFindAllIsEqualsInJpaJdbc(){
 		//given
-		List<Products> jdbcProducts = jdbcDao.listSortedProducts();
+		List<Products> jdbcProducts = jdbcProductDao.listProductsSortedByProductName();
 		List<Products> jpaProducts = jpaProductsDao.findAll(new Sort(Sort.Direction.ASC, "productname"));
 		//then
 		assertThat(jdbcProducts).isEqualTo(jpaProducts);
@@ -58,7 +58,7 @@ public class Bazydanych2017ApplicationTests {
 	@Test
 	public void checkIfNumberOfChangesEqualsInJpaJdbc(){
 		//given
-		int jdbcChangedBeverages = jdbcDao.changeUnitPriceForCategoryname(10.0,"Beverages");
+		int jdbcChangedBeverages = jdbcProductDao.changeProductsUnitPriceForCategoryname(10.0,"Beverages");
 		int jpaChangedBeverages = jpaProductsDao.changeUnitPriceForCategoryname("Beverages", 10.0);
 		//then
 		assertThat(jdbcChangedBeverages).isEqualTo(jpaChangedBeverages);

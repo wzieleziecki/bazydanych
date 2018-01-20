@@ -8,7 +8,7 @@ import pl.edu.agh.bazydanych2017.dao.CustomerDao;
 import pl.edu.agh.bazydanych2017.model.Customer;
 
 @Repository
-public class JdbcCustomerDao implements CustomerDao {
+public class JdbcCustomerDaoImpl implements CustomerDao {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -31,7 +31,7 @@ public class JdbcCustomerDao implements CustomerDao {
     };
 
     @Autowired
-    public JdbcCustomerDao(JdbcTemplate jdbcTemplate, JdbcOrderDao jdbcOrderDao) {
+    public JdbcCustomerDaoImpl(JdbcTemplate jdbcTemplate, JdbcOrderDao jdbcOrderDao) {
         this.jdbcTemplate = jdbcTemplate;
         this.jdbcOrderDao = jdbcOrderDao;
     }

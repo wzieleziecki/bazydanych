@@ -35,10 +35,10 @@ public class JdbcProductsCategoriesVO implements ProductsCategoriesVODao{
         String sql = "select distinct a.CategoryName, b.ProductName, b.QuantityPerUnit, b.UnitsInStock, b.Discontinued from Categories a inner join Products b on a.CategoryID = b.CategoryID where b.Discontinued = ? order by a.CategoryName, b.ProductName";
         return jdbcTemplate.query(sql, productsCategoriesVORowMapper,discontinued);
     }
-    @PostConstruct
-    public void jdbcRunAtStart(){
-        for ( ProductsCategoriesVO productsCategoriesVO : productByCategory("N") ) {
-            System.out.println("JOIN Query " + productsCategoriesVO);
-        }
-    }
+//    @PostConstruct
+//    public void jdbcRunAtStart(){
+//        for ( ProductsCategoriesVO productsCategoriesVO : productByCategory("N") ) {
+//            System.out.println("JOIN Query " + productsCategoriesVO);
+//        }
+//    }
 }
