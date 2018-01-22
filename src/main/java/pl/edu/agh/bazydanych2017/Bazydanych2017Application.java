@@ -17,24 +17,25 @@ public class Bazydanych2017Application implements CommandLineRunner {
 	}
 
 	private JpaProductsDao jpaProductsDaoImpl;
-	//todo: zmienić nazwę JdbcProductsDao na JdbcProductsDao
-	//todo: Podzielić interfejs JdbcProductsDao na tabele
 	private JdbcProductsDao jdbcProductDaoImpl;
 	private JpaTransaction jpaTransaction;
 	private JpaCategoriesDao jpaCategoriesDaoImpl;
 	private JdbcTransaction jdbcTransaction;
+	private TimeCounter	timeCounter;
 
-	public Bazydanych2017Application(JpaProductsDao jpaProductsDaoImpl, JdbcProductsDao jdbcProductDaoImpl, JpaTransaction jpaTransaction, JpaCategoriesDao jpaCategoriesDaoImpl, JdbcTransaction jdbcTransaction) {
+	public Bazydanych2017Application(JpaProductsDao jpaProductsDaoImpl, JdbcProductsDao jdbcProductDaoImpl, JpaTransaction jpaTransaction, JpaCategoriesDao jpaCategoriesDaoImpl, JdbcTransaction jdbcTransaction, TimeCounter timeCounter) {
 		this.jpaProductsDaoImpl = jpaProductsDaoImpl;
 		this.jdbcProductDaoImpl = jdbcProductDaoImpl;
 		this.jpaTransaction = jpaTransaction;
 		this.jpaCategoriesDaoImpl = jpaCategoriesDaoImpl;
 		this.jdbcTransaction = jdbcTransaction;
+		this.timeCounter = timeCounter;
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
 		jpaProductsDaoImpl.listProductsSortedByProductName();
+		System.out.printf("JPA %f", (double)timeCounter.AvarageTimelistProductsSortedByProductName(10));
 		jdbcProductDaoImpl.listProductsSortedByProductName();
 
 		jpaProductsDaoImpl.findProductByProductName("Chai");
@@ -43,19 +44,13 @@ public class Bazydanych2017Application implements CommandLineRunner {
 		jpaProductsDaoImpl.changeProductsUnitPriceForCategoryname("Beverages", 10.0);
 		jdbcProductDaoImpl.changeProductsUnitPriceForCategoryname("Beverages",10.0);
 
-		//todo: przerobic  metodę dodać parametry
-		jpaTransaction.changeExistingCategory("WZ1", "Spice food JAP1", "Nowa kaegoria WZ");
-		jdbcTransaction.changeExistingCategory("WZ2", "Spice food JAP2", "Nowa kaegoria WZ");
-//		jpaProductsDaoImpl.removeForeignKeyCategoryidFromProducts("Spice food2");
-//		jpaCategoriesDaoImpl.deleteCategoryByCategoryname("Spice food2");
-//		jpaCategoriesDaoImpl.createNewCategory("Spice food", "Nowakategoria JPA Transakcja");
-//		jpaProductsDaoImpl.setCategoryidWhereCategoryidIsNull("Spice food");
-		//todo: sprawdzić opisy operacji
-		//todo: konwersja milisekund do bardziej przyjaznej postaci
-		//todo: opsiuać jak to zrobiłem
+	//	jpaTransaction.changeExistingCategory("IZ3", "IZ2", "Nowa kaegoria WZ");
+	//	jdbcTransaction.changeExistingCategory("IZ3", "IZ2", "Nowa kaegoria WZ");
 
 		jpaTransaction.createNewProduct("Dethrein", "Exotic Liquids","Spice food","10 boxes x 20 bags", 10D,50L, 10L, 10L, false);
 		jdbcProductDaoImpl.createNewProduct("Dethrein", "Exotic Liquids","Spice food","10 boxes x 20 bags", 10D,50L, 10L, 10L, false);
 
+		//todo: dokumentacja
+		//todo: raport skomplikowany
 	}
 }

@@ -10,14 +10,6 @@ import pl.edu.agh.bazydanych2017.model.Products;
 import java.util.List;
 
 public interface JpaProductsDao {
-    //select
-    //Products findProductByProductName(String productname);
-
-    //update
-
-//    @Modifying
-//    @Query(value = "update Products p set p.unitprice = p.unitprice+ :addToUnitPrice where p.categoryid in (select c.categoryid from Categories c where c.categoryname = :categryname)")
-//    int changeProductsUnitPriceForCategoryname(@Param("categryname") String categoryname, @Param("addToUnitPrice") Double addToUnitPrice );
 
     List<Products> listProductsSortedByProductName();
 

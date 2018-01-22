@@ -128,7 +128,7 @@ public class JdbcProductsDaoImpl implements JdbcProductsDao {
         int update = namedParameterJdbcTemplate.update(sql, parameter);
         long EndTime = System.nanoTime();
         long output = EndTime - StartTime;
-        logger.info("JDBC create new product - time "+ output);
+        logger.info("JDBC stworzenie nowego produktu Trnsakcja - time"+ output);
         return update;
     }
 

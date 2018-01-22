@@ -25,11 +25,16 @@ public class JpaProductsDaoImpl implements JpaProductsDao{
     @Override
     public List<Products> listProductsSortedByProductName() {
         long StartTime = System.nanoTime();
-        List<Products> productname = jpaProductRepository.findAll(new Sort(Sort.Direction.ASC, "productname"));
+        List<Products> productList = jpaProductRepository.findAll(new Sort(Sort.Direction.ASC, "productname"));
         long EndTime = System.nanoTime();
         long output = EndTime - StartTime;
         logger.info("JPA list Sorted Products - time " + output);
-        return productname;
+        return productList;
+    }
+
+    public List<Products> TimelistProductsSortedByProductName() {
+        List<Products> productList = jpaProductRepository.findAll(new Sort(Sort.Direction.ASC, "productname"));
+        return productList;
     }
 
     //todo: zmienić nazwę zwracanej zmiennej

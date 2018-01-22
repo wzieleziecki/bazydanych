@@ -18,7 +18,7 @@ public class JdbcTransactionImpl implements JdbcTransaction {
 
     @Override
     public void changeExistingCategory(String newCategory, String oldCategory, String description) {
-        logger.info("JPA Start Transaction - changeExistingCategory ");
+        logger.info("JDBC Start Transaction - changeExistingCategory ");
         long StartTime = System.nanoTime();
         jdbcProductDao.removeForeignKeyCategoryidFromProducts(oldCategory);
         jdbcCategoriesDao.deleteCategroryByCategoryname(oldCategory);
