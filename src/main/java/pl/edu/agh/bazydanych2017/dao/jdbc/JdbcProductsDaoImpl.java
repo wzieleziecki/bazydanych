@@ -62,6 +62,22 @@ public class JdbcProductsDaoImpl implements JdbcProductsDao {
         logger.info("JDBC find by product name - time "+ output);
         return products;
     }
+
+    public Products timeFindProductByProductName(String productname) {
+        String sql = "SELECT ProductID, ProductName, SupplierID, categoryname AS CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued  FROM northwind.products \n" +
+                "JOIN categories ON categories.CategoryID = products.CategoryID \n" +
+                "WHERE ProductName = ?";
+        Products products = jdbcTemplate.queryForObject(sql, productsRowMapper, productname);
+        return products;
+    }
+
+    public Products listDetailInformationForInvoicePurpose(String productname) {
+        String sql = "SELECT ProductID, ProductName, SupplierID, categoryname AS CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued  FROM northwind.products \n" +
+                "JOIN categories ON categories.CategoryID = products.CategoryID \n" +
+                "WHERE ProductName = ?";
+        Products products = jdbcTemplate.queryForObject(sql, productsRowMapper, productname);
+        return products;
+    }
     @Override
     public List<Products> listProductsSortedByProductName(){
         String sql = "SELECT * FROM products order by ProductName asc";
@@ -69,9 +85,16 @@ public class JdbcProductsDaoImpl implements JdbcProductsDao {
         List<Products> listSortedProducts = jdbcTemplate.query(sql, productsRowMapper);
         long EndTime = System.nanoTime();
         long output = EndTime - StartTime;
-        logger.info("JDBC list Sorted Products - time "+ output);
+        logger.info("JDBC list Sorted Products - time "+ output / 1000000000.0);
         return listSortedProducts;
         }
+
+    @Override
+    public List<Products> TimelistProductsSortedByProductName() {
+        String sql = "SELECT * FROM products order by ProductName asc";
+        List<Products> productList = jdbcTemplate.query(sql, productsRowMapper);
+        return productList;
+    }
 
     @Override
     public int changeProductsUnitPriceForCategoryname(String categroryname, Double addToUnitPrice) {

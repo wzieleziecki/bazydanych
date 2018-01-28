@@ -9,8 +9,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.edu.agh.bazydanych2017.dao.JpaProductRepository;
 import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcProductsDao;
+import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcReportDao;
 import pl.edu.agh.bazydanych2017.dao.jpa.JpaProductsDao;
+import pl.edu.agh.bazydanych2017.dao.jpa.JpaReportDaoImpl;
 import pl.edu.agh.bazydanych2017.model.Products;
+import pl.edu.agh.bazydanych2017.model.Report;
 
 import java.util.List;
 
@@ -21,8 +24,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class Bazydanych2017ApplicationTests {
 
 	private JdbcProductsDao jdbcProductDao;
-	private  JpaProductsDao jpaProductsDao;
+	private JpaProductsDao jpaProductsDao;
 	private JpaProductRepository jpaProductRepository;
+	private JpaReportDaoImpl jpaReportDaoImpl;
+	private JdbcReportDao jdbcReportDao;
 
 	@Autowired
 	public void setJdbcProductsDao(JdbcProductsDao jdbcProductDao) {
@@ -37,6 +42,16 @@ public class Bazydanych2017ApplicationTests {
 	@Autowired
 	public void setJpaProductRepository(JpaProductRepository jpaProductRepository) {
 		this.jpaProductRepository = jpaProductRepository;
+	}
+
+	@Autowired
+	public void setJpaReportDaoImpl(JpaReportDaoImpl jpaReportDaoImpl) {
+		this.jpaReportDaoImpl = jpaReportDaoImpl;
+	}
+
+	@Autowired
+	public void setJdbcReportDao(JdbcReportDao jdbcReportDao) {
+		this.jdbcReportDao = jdbcReportDao;
 	}
 
 	@Test
@@ -62,6 +77,14 @@ public class Bazydanych2017ApplicationTests {
 		assertThat(jdbcProducts).isEqualTo(jpaProducts);
 	}
 
+	@Test
+	public void checkIfQueryReportIsEqualsInJpaJdbc(){
+		//given
+		List<Report> jpaReports = jpaReportDaoImpl.detailInformationForInvoicePurpose();
+		List<Report> jdbcReports = jdbcReportDao.detailInformationForInvoicePurpose();
+		//then
+		assertThat(jpaReports).isEqualTo(jdbcReports);
+	}
 	//test update
 	@Test
 	public void checkIfNumberOfChangesEqualsInJpaJdbc(){

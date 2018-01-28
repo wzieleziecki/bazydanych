@@ -32,7 +32,7 @@ public class JdbcOrderDetailDao implements OrderDetailDao {
 
     @Override
     public OrderDetail create(OrderDetail orderDetail) {
-        String sql = "INSERT INTO `order details` VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO order_details VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 orderDetail.getOrderId(),
                 orderDetail.getProductId(),
@@ -44,18 +44,18 @@ public class JdbcOrderDetailDao implements OrderDetailDao {
 
     @Override
     public OrderDetail read(OrderDetailPK pk) {
-        String sql = "SELECT * FROM `order details` WHERE OrderID = ? AND ProductID = ?";
+        String sql = "SELECT * FROM order_details WHERE OrderID = ? AND ProductID = ?";
         return jdbcTemplate.queryForObject(sql, orderDetailRowMapper, pk.getOrderId(), pk.getProductId());
     }
 
     public List<OrderDetail> findByOrderId(long orderId) {
-        String sql = "SELECT * FROM `order details` WHERE OrderID = ?";
+        String sql = "SELECT * FROM order_details WHERE OrderID = ?";
         return jdbcTemplate.query(sql, orderDetailRowMapper, orderId);
     }
 
     @Override
     public OrderDetail update(OrderDetail orderDetail) {
-        String sql = "UPDATE `order details` " +
+        String sql = "UPDATE order_details " +
                 "SET UnitPrice = ?, Quantity = ?, Discount = ? " +
                 "WHERE OrderID = ? AND ProductID = ?";
         jdbcTemplate.update(sql,
@@ -66,12 +66,12 @@ public class JdbcOrderDetailDao implements OrderDetailDao {
 
     @Override
     public void delete(OrderDetail orderDetail) {
-        String sql = "DELETE FROM `order details` WHERE OrderID = ? AND ProductID = ?";
+        String sql = "DELETE FROM order_details WHERE OrderID = ? AND ProductID = ?";
         jdbcTemplate.update(sql, orderDetail.getOrderId(), orderDetail.getProductId());
     }
 
     public void deleteByOrderId(long orderId) {
-        String sql = "DELETE FROM `order details` WHERE OrderID = ?";
+        String sql = "DELETE FROM order_details WHERE OrderID = ?";
         jdbcTemplate.update(sql, orderId);
     }
 }

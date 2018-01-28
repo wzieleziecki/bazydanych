@@ -28,10 +28,10 @@ public class JpaProductsDaoImpl implements JpaProductsDao{
         List<Products> productList = jpaProductRepository.findAll(new Sort(Sort.Direction.ASC, "productname"));
         long EndTime = System.nanoTime();
         long output = EndTime - StartTime;
-        logger.info("JPA list Sorted Products - time " + output);
+        logger.info("JPA list Sorted Products - time " + output/ 1000000000.0);
         return productList;
     }
-
+//todo: zła nazwa metody ma być z małej litery
     public List<Products> TimelistProductsSortedByProductName() {
         List<Products> productList = jpaProductRepository.findAll(new Sort(Sort.Direction.ASC, "productname"));
         return productList;
@@ -45,6 +45,11 @@ public class JpaProductsDaoImpl implements JpaProductsDao{
         long EndTime = System.nanoTime();
         long output = EndTime - StartTime;
         logger.info("JPA find by product name - time "+ output);
+        return chai;
+    }
+
+    public Products timeFindProductByProductName(String productName) {
+        Products chai = jpaProductRepository.findByProductname(productName);
         return chai;
     }
 

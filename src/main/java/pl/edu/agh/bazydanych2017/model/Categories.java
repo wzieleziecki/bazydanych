@@ -7,7 +7,6 @@ import java.util.List;
 public class Categories {
   @Id
   @GeneratedValue
-  //@Column(name = "CategoryID")
   private Long categoryid;
   private String categoryname;
   private String description;

@@ -26,4 +26,6 @@ public interface JpaProductRepository extends JpaRepository<Products,Long> {
     @Query(value = "update Products p set p.categoryid = (select c.categoryid from Categories c where c.categoryname = :categryname) where p.categoryid = null")
     int setCategoryidWhereCategoryidIsNull(@Param("categryname") String categoryname);
 
+
+
 }

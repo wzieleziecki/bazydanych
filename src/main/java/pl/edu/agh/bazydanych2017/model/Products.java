@@ -1,6 +1,7 @@
 package pl.edu.agh.bazydanych2017.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Products {
@@ -20,6 +21,10 @@ public class Products {
   private Long unitsonorder;
   private Long reorderlevel;
   private Boolean discontinued;
+
+  @OneToMany(mappedBy="productid")
+  private List<Products> products;
+
 
   public Products() {
   }

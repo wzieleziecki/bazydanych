@@ -16,6 +16,30 @@ public class Order {
 
     private String customerId;
 
+    private long employeeId;
+
+    private Timestamp orderDate;
+
+    private Timestamp requiredDate;
+
+    private Timestamp shippedDate;
+
+    private long shipVia;
+
+    private BigDecimal freight;
+
+    private String shipName;
+
+    private String shipAddress;
+
+    private String shipCity;
+
+    private String shipRegion;
+
+    private String shipPostalCode;
+
+    private String shipCountry;
+
     public long getOrderId() {
         return orderId;
     }
@@ -127,29 +151,4 @@ public class Order {
     public void setShipCountry(String shipCountry) {
         this.shipCountry = shipCountry;
     }
-
-    private long employeeId;
-
-    private Timestamp orderDate;
-
-    private Timestamp requiredDate;
-
-    private Timestamp shippedDate;
-
-    private long shipVia;
-
-    private BigDecimal freight;
-
-    private String shipName;
-
-    private String shipAddress;
-
-    private String shipCity;
-
-    private String shipRegion;
-
-    private String shipPostalCode;
-
-    private String shipCountry;
-
 }

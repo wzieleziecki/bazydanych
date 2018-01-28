@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Data
-@Entity
+
 @Table(name = "employeeterritories", schema = "northwind")
 @IdClass(EmployeeTerritoryPK.class)
 public class EmployeeTerritory implements Serializable {
