@@ -1,78 +1,32 @@
 package pl.edu.agh.bazydanych2017;
 
-import org.springframework.stereotype.Component;
-import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcProductsDao;
-import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcProductsDaoImpl;
-import pl.edu.agh.bazydanych2017.dao.jpa.JpaProductsDaoImpl;
+public interface TimeCounter {
+    //ListProductsSortedByProductName#############################################
+    //test potwierdzający że zapytanią są identyczne - checkIfQueryFindAllSortedIsEqualsInJpaJdbc
+    Double avarageTimeJPAListProductsSortedByProductName(int numberOfTest);
 
-import java.util.Arrays;
-@Component
-public class TimeCounter {
+    Double avarageTimeJDBCListProductsSortedByProductName(int numberOfTest);
 
-    private JpaProductsDaoImpl jpaProductsDaoImpl;
-    private JdbcProductsDaoImpl jdbcProductsDaoImpl;
+    //FindProductByProductName####################################################
+    //test potwierdzający że zapytanią są identyczne - checkIfQueryFindByProductnameIsEqualsInJpaJdbc
+    Double avarageTimeJPAFindProductByProductName(int numberOfTest, String productname);
 
-    public TimeCounter(JpaProductsDaoImpl jpaProductsDaoImpl, JdbcProductsDaoImpl jdbcProductsDaoImpl) {
-        this.jpaProductsDaoImpl = jpaProductsDaoImpl;
-        this.jdbcProductsDaoImpl = jdbcProductsDaoImpl;
-    }
+    Double avarageTimeJDBCFindProductByProductName(int numberOfTest, String productname);
 
+    //DetailInformationForInvoicePurpose##########################################
+    //test potwierdzający że zapytanią są identyczne - checkIfQueryReportIsEqualsInJpaJdbc przechodzi po normalnym uruchomieniu aplikacji
+    Double avarageTimeJDBCReport(int numberOfTest);
 
-    public Double AvarageTimeJPAlistProductsSortedByProductName(int numberOfTest){
-        long[] time = new long [numberOfTest];
-        for(int i=0; i < numberOfTest; i++)
-        {
-            long StartTime = System.nanoTime();
-                jpaProductsDaoImpl.TimelistProductsSortedByProductName();
-            long EndTime = System.nanoTime();
-            long output = EndTime - StartTime;
-            //todo: przerobić na logowanie
-            time[i] = output;
-           // System.out.println(time[i]);
-        }
-        Double avg = Arrays.stream(time).average().getAsDouble();
-        return avg;
-    }
- //todo: testy listProductsSortedByProductName JDBC
-    //todo:zła nazwa metody
-     public Double AvarageTimeJDBClistProductsSortedByProductName(int numberOfTest) {
-         long[] time = new long[numberOfTest];
-         for (int i = 0; i < numberOfTest; i++) {
-             long StartTime = System.nanoTime();
-             jdbcProductsDaoImpl.TimelistProductsSortedByProductName();
-             long EndTime = System.nanoTime();
-             long output = EndTime - StartTime;
-             time[i] = output;
-             // System.out.println(time[i]);
-         }
-         Double avg = Arrays.stream(time).average().getAsDouble();
-         return avg;
-     }
+    Double avarageTimeJPAReport(int numberOfTest);
 
-    public Double AvarageTimeJPAFindProductByProductName(int numberOfTest, String productname) {
-        long[] time = new long[numberOfTest];
-        for (int i = 0; i < numberOfTest; i++) {
-            long StartTime = System.nanoTime();
-            jpaProductsDaoImpl.timeFindProductByProductName(productname);
-            long EndTime = System.nanoTime();
-            long output = EndTime - StartTime;
-            time[i] = output;
-            // System.out.println(time[i]);
-        }
-        Double avg = Arrays.stream(time).average().getAsDouble();
-        return avg;
-    }
+    //ChangeProductsUnitPriceForCategoryname######################################
+    //todo: brak testu potwierdzającego że to działa tak samo w JDBC i JPA
+    Double avarageTimeJDBCChangeProductsUnitPriceForCategoryname(int numberOfTest, String categoryname, Double addToUnitPrice);
 
-    public Double AvarageTimeJDBCFindProductByProductName(int numberOfTest, String productname) {
-        long[] time = new long[numberOfTest];
-        for (int i = 0; i < numberOfTest; i++) {
-            long StartTime = System.nanoTime();
-            jdbcProductsDaoImpl.timeFindProductByProductName(productname);
-            long EndTime = System.nanoTime();
-            long output = EndTime - StartTime;
-            time[i] = output;
-        }
-        Double avg = Arrays.stream(time).average().getAsDouble();
-        return avg;
-    }
+    Double avarageTimeJPAChangeProductsUnitPriceForCategoryname(int numberOfTest, String categoryname, Double addToUnitPrice);
+
+    //CreateNewProduct############################################################
+    Double avarageTimeJPACreateNewProduct(int numberOfTest, String productname, String companyname, String categoryname, String quantityperunit, Double unitprice, Long unitsinstock, Long unitsonorder, Long reorderlevel, boolean discontinued);
+
+    Double avarageTimeJDBCCreateNewProduct(int numberOfTest, String productname, String companyname, String categoryname, String quantityperunit, Double unitprice, Long unitsinstock, Long unitsonorder, Long reorderlevel, boolean discontinued);
 }

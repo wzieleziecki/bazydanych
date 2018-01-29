@@ -1,11 +1,11 @@
-package pl.edu.agh.bazydanych2017.dao.jpa;
+package pl.edu.agh.bazydanych2017.dao.jpa.repository;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edu.agh.bazydanych2017.dao.JpaCategoriesDao;
-import pl.edu.agh.bazydanych2017.dao.JpaProductRepository;
-import pl.edu.agh.bazydanych2017.dao.JpaSuppliersRepository;
+import pl.edu.agh.bazydanych2017.dao.jpa.JpaCategoriesDao;
+import pl.edu.agh.bazydanych2017.dao.jpa.JpaProductsDao;
+import pl.edu.agh.bazydanych2017.dao.jpa.JpaTransactionDao;
 import pl.edu.agh.bazydanych2017.model.Categories;
 import pl.edu.agh.bazydanych2017.model.Products;
 import pl.edu.agh.bazydanych2017.model.Suppliers;
@@ -14,7 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 @Component
-public class JpaTransctionImpl implements JpaTransaction {
+public class JpaTransctionDaoImpl implements JpaTransactionDao {
 
     private final JpaCategoriesDao jpaCategoriesDao;
     private final JpaProductsDao jpaProductsDao;
@@ -24,7 +24,7 @@ public class JpaTransctionImpl implements JpaTransaction {
 
     private final Logger logger = Logger.getLogger(JpaProductsDaoImpl.class);
 
-    public JpaTransctionImpl(JpaCategoriesDao jpaCategoriesDao, JpaProductsDao jpaProductsDao, JpaProductRepository jpaProductRepository, JpaCategoriesRepository jpaCategoriesRepository, JpaSuppliersRepository jpaSuppliersRepository) {
+    public JpaTransctionDaoImpl(JpaCategoriesDao jpaCategoriesDao, JpaProductsDao jpaProductsDao, JpaProductRepository jpaProductRepository, JpaCategoriesRepository jpaCategoriesRepository, JpaSuppliersRepository jpaSuppliersRepository) {
         this.jpaCategoriesDao = jpaCategoriesDao;
         this.jpaProductsDao = jpaProductsDao;
         this.jpaProductRepository = jpaProductRepository;
@@ -60,5 +60,14 @@ public class JpaTransctionImpl implements JpaTransaction {
         long EndTime = System.nanoTime();
         long output = EndTime - StartTime;
         logger.info("JPA stworzenie nowego produktu Trnsakcja - time "+ output);
+    }
+
+    @Override
+    @Transactional
+    public void timeCreateNewProduct(String productname, String companyname, String categoryname, String quantityperunit, Double unitprice, Long unitsinstock, Long unitsonorder, Long reorderlevel, boolean discontinued) {
+        Categories spiceFoodId = jpaCategoriesRepository.findByCategoryname(categoryname);
+        Suppliers suppliers = jpaSuppliersRepository.findByCompanyname(companyname);
+        Products products = new Products(productname, suppliers,spiceFoodId,quantityperunit, unitprice,unitsinstock, unitsonorder, reorderlevel, discontinued);
+        em.persist(products);
     }
 }

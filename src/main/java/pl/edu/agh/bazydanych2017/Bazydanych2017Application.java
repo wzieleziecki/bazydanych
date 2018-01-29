@@ -4,16 +4,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcProductsDao;
-import pl.edu.agh.bazydanych2017.dao.JpaCategoriesDao;
+import pl.edu.agh.bazydanych2017.dao.jpa.JpaCategoriesDao;
 import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcReportDao;
+import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcTransactionDao;
 import pl.edu.agh.bazydanych2017.dao.jpa.JpaProductsDao;
-import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcTransaction;
-import pl.edu.agh.bazydanych2017.dao.jpa.JpaReportDaoImpl;
-import pl.edu.agh.bazydanych2017.dao.jpa.JpaTransaction;
+import pl.edu.agh.bazydanych2017.dao.jpa.JpaReportDao;
+import pl.edu.agh.bazydanych2017.dao.jpa.repository.JpaReportDaoImpl;
+import pl.edu.agh.bazydanych2017.dao.jpa.JpaTransactionDao;
 import org.apache.log4j.Logger;
-import pl.edu.agh.bazydanych2017.model.Report;
-
-import java.util.List;
 
 @SpringBootApplication
 public class Bazydanych2017Application implements CommandLineRunner {
@@ -22,64 +20,52 @@ public class Bazydanych2017Application implements CommandLineRunner {
 		SpringApplication.run(Bazydanych2017Application.class, args);
 	}
 
-	private JpaProductsDao jpaProductsDaoImpl;
-	private JdbcProductsDao jdbcProductDaoImpl;
-	private JpaTransaction jpaTransaction;
-	private JpaCategoriesDao jpaCategoriesDaoImpl;
-	private JdbcTransaction jdbcTransaction;
-	private TimeCounter	timeCounter;
-	private JpaReportDaoImpl jpaReportDaoImpl;
+	private JpaProductsDao jpaProductsDao;
+	private JdbcProductsDao jdbcProductDao;
+	private JpaTransactionDao jpaTransactionDao;
+	private JpaCategoriesDao jpaCategoriesDao;
+	private JdbcTransactionDao jdbcTransactionDao;
+	private TimeCounter timeCounter;
+	private JpaReportDao jpaReportDao;
 	private JdbcReportDao jdbcReportDao;
 	private final Logger logger = Logger.getLogger(Bazydanych2017Application.class);
 
-	public Bazydanych2017Application(JpaProductsDao jpaProductsDaoImpl, JdbcProductsDao jdbcProductDaoImpl, JpaTransaction jpaTransaction, JpaCategoriesDao jpaCategoriesDaoImpl, JdbcTransaction jdbcTransaction, TimeCounter timeCounter, JpaReportDaoImpl jpaReportDaoImpl, JdbcReportDao jdbcReportDao) {
-		this.jpaProductsDaoImpl = jpaProductsDaoImpl;
-		this.jdbcProductDaoImpl = jdbcProductDaoImpl;
-		this.jpaTransaction = jpaTransaction;
-		this.jpaCategoriesDaoImpl = jpaCategoriesDaoImpl;
-		this.jdbcTransaction = jdbcTransaction;
+	public Bazydanych2017Application(JpaProductsDao jpaProductsDao, JdbcProductsDao jdbcProductDao, JpaTransactionDao jpaTransactionDao, JpaCategoriesDao jpaCategoriesDao, JdbcTransactionDao jdbcTransactionDao, TimeCounterImpl timeCounter, JpaReportDaoImpl jpaReportDao, JdbcReportDao jdbcReportDao) {
+		this.jpaProductsDao = jpaProductsDao;
+		this.jdbcProductDao = jdbcProductDao;
+		this.jpaTransactionDao = jpaTransactionDao;
+		this.jpaCategoriesDao = jpaCategoriesDao;
+		this.jdbcTransactionDao = jdbcTransactionDao;
 		this.timeCounter = timeCounter;
-		this.jpaReportDaoImpl = jpaReportDaoImpl;
+		this.jpaReportDao = jpaReportDao;
 		this.jdbcReportDao = jdbcReportDao;
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
-		int numberOfTest = 1;
+		int numberOfTest = 100;
 		//todo: refaktoryzacja interfejsów i klas jpadao i jdbcdao
-		//jpaProductsDaoImpl.listProductsSortedByProductName();
-		logger.info("JPA "+ numberOfTest +" test listProductsSortedByProductName "+ (double)timeCounter.AvarageTimeJPAlistProductsSortedByProductName(numberOfTest)/ 1000000000.0);
-		//jdbcProductDaoImpl.listProductsSortedByProductName();
-		logger.info("JDBC "+ numberOfTest +" test listProductsSortedByProductName "+ (double)timeCounter.AvarageTimeJDBClistProductsSortedByProductName(numberOfTest)/ 1000000000.0);
+		logger.info("JPA   "+ numberOfTest +" test listProductsSortedByProductName        "+ (double) timeCounter.avarageTimeJPAListProductsSortedByProductName(numberOfTest)/ 1000000000.0);
+		logger.info("JDBC  "+ numberOfTest +" test listProductsSortedByProductName        "+ (double) timeCounter.avarageTimeJDBCListProductsSortedByProductName(numberOfTest)/ 1000000000.0);
 
-		//jpaProductsDaoImpl.findProductByProductName("Chai");
-		logger.info("JPA "+ numberOfTest +" test FindProductByProductName "+ (double)timeCounter.AvarageTimeJPAFindProductByProductName(numberOfTest,"Chai")/ 1000000000.0);
-		//jdbcProductDaoImpl.findProductByProductName("Chai");
-		logger.info("JDBC "+ numberOfTest +" test FindProductByProductName "+ (double)timeCounter.AvarageTimeJDBCFindProductByProductName(numberOfTest,"Chai")/ 1000000000.0);
+		logger.info("JPA   "+ numberOfTest +" test FindProductByProductName               "+ (double) timeCounter.avarageTimeJPAFindProductByProductName(numberOfTest,"Chai")/ 1000000000.0);
+		logger.info("JDBC  "+ numberOfTest +" test FindProductByProductName               "+ (double) timeCounter.avarageTimeJDBCFindProductByProductName(numberOfTest,"Chai")/ 1000000000.0);
 
-		//todo: dorobić skomplikowane zapytanie JPA JDBC
-		List<Report> reports = (List<Report>)jpaReportDaoImpl.detailInformationForInvoicePurpose();
-//		System.out.println(reports.get(1));
-//		for (Object jpaReport : reports) {
-//			System.out.println("JPA Report " + jpaReport.toString());
-//		}
-		List<Report> reports1 = jdbcReportDao.detailInformationForInvoicePurpose();
-		for (Report jdbcReport : reports) {
-			System.out.println("JDBC Report " + jdbcReport);
-		}
+		logger.info("JPA   "+ numberOfTest +" test Report                                 "+ (double) timeCounter.avarageTimeJPAReport(numberOfTest)/ 1000000000.0);
+		logger.info("JDBC  "+ numberOfTest +" test Report                                 "+ (double) timeCounter.avarageTimeJDBCReport(numberOfTest)/ 1000000000.0);
 
+		logger.info("JPA   "+ numberOfTest +" test changeProductsUnitPriceForCategoryname "+ (double) timeCounter.avarageTimeJPAChangeProductsUnitPriceForCategoryname(numberOfTest,"Beverages", 10.0)/ 1000000000.0);
+		logger.info("JDBC  "+ numberOfTest +" test changeProductsUnitPriceForCategoryname "+ (double) timeCounter.avarageTimeJDBCChangeProductsUnitPriceForCategoryname(numberOfTest,"Beverages", 10.0)/ 1000000000.0);
 
-		jpaProductsDaoImpl.changeProductsUnitPriceForCategoryname("Beverages", 10.0);
-		jdbcProductDaoImpl.changeProductsUnitPriceForCategoryname("Beverages",10.0);
+	//	jpaTransactionDao.changeExistingCategory("IZ3", "IZ2", "Nowa kaegoria WZ");
+	//	jdbcTransactionDao.changeExistingCategory("IZ3", "IZ2", "Nowa kaegoria WZ");
 
-	//	jpaTransaction.changeExistingCategory("IZ3", "IZ2", "Nowa kaegoria WZ");
-	//	jdbcTransaction.changeExistingCategory("IZ3", "IZ2", "Nowa kaegoria WZ");
-
-		jpaTransaction.createNewProduct("Dethrein", "Exotic Liquids","Spice food","10 boxes x 20 bags", 10D,50L, 10L, 10L, false);
-		jdbcProductDaoImpl.createNewProduct("Dethrein", "Exotic Liquids","Spice food","10 boxes x 20 bags", 10D,50L, 10L, 10L, false);
+		logger.info("JPA   "+ numberOfTest +" test createNewProduct                       "+ (double) timeCounter.avarageTimeJPACreateNewProduct(numberOfTest,"Dethrein", "Exotic Liquids","Spice food","10 boxes x 20 bags", 10D,50L, 10L, 10L, false)/ 1000000000.0);
+		logger.info("JDBC  "+ numberOfTest +" test createNewProduct                       "+ (double) timeCounter.avarageTimeJDBCCreateNewProduct(numberOfTest,"Dethrein", "Exotic Liquids","Spice food","10 boxes x 20 bags", 10D,50L, 10L, 10L, false)/ 1000000000.0);
 
 		//todo: dokumentacja
-		//todo: raport skomplikowany
-		//todo: transakcja która nie będzie generować błędu zamówienie
+		//todo: transakcja która nie będzie generować błędu zamówienie - to sam sobie dodałem ale może być jak starczy czasu
+//todo: uporządkuj interfejsy
+
 	}
 }

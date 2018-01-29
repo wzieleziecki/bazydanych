@@ -1,4 +1,4 @@
-package pl.edu.agh.bazydanych2017.dao.jdbc;
+package pl.edu.agh.bazydanych2017.dao.jdbc.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -11,6 +11,7 @@ import pl.edu.agh.bazydanych2017.model.OrderDetailPK;
 import java.util.List;
 
 @Repository
+//todo: klasa nie jest używana przeze mnie
 public class JdbcOrderDetailDao implements OrderDetailDao {
 
     private JdbcTemplate jdbcTemplate;

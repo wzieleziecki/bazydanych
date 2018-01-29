@@ -1,13 +1,15 @@
-package pl.edu.agh.bazydanych2017.dao.jdbc;
+package pl.edu.agh.bazydanych2017.dao.jdbc.repository;
 
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.support.TransactionTemplate;
-@Component
+import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcCategoriesDao;
+
+@Repository
 public class JdbcCategoriesDaoImpl implements JdbcCategoriesDao {
 
     private JdbcTemplate jdbcTemplate;
@@ -24,7 +26,6 @@ public class JdbcCategoriesDaoImpl implements JdbcCategoriesDao {
     @Override
     public int deleteCategroryByCategoryname(String categoryname) {
         String sql = "delete from northwind.categories where categoryid = :categoryname";
-        //todo: zmienić sposób podawania argumentów
         SqlParameterSource parameter = new MapSqlParameterSource("categoryname",categoryname);
         long StartTime = System.nanoTime();
         int update = namedParameterJdbcTemplate.update(sql, parameter);
@@ -33,7 +34,6 @@ public class JdbcCategoriesDaoImpl implements JdbcCategoriesDao {
         logger.info("JDBC delete category by category name - time "+ output);
         return update;
     }
-    //todo: transaction
     @Override
     public void addUniqueCategory(String categoryname, String description){
         deleteCategroryByCategoryname(categoryname);
@@ -49,7 +49,6 @@ public class JdbcCategoriesDaoImpl implements JdbcCategoriesDao {
     @Override
     public int createNewCategrory(String categoryname, String description) {
         String sql = "INSERT INTO categories (categoryname,  description) VALUES (:categoryname, :description)";
-        //todo: zmienić sposób podawania argumentów
         SqlParameterSource parameter = new MapSqlParameterSource("categoryname",categoryname).addValue("description",description);
         long StartTime = System.nanoTime();
         int update = namedParameterJdbcTemplate.update(sql, parameter);

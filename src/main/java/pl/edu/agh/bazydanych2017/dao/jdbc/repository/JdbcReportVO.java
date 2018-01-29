@@ -1,21 +1,22 @@
-package pl.edu.agh.bazydanych2017.dao.jdbc;
+package pl.edu.agh.bazydanych2017.dao.jdbc.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcReportDao;
 import pl.edu.agh.bazydanych2017.model.Report;
 
 import java.util.List;
 
 @Repository
-public class JdbcReport implements JdbcReportDao
+public class JdbcReportVO implements JdbcReportDao
 {
 
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public JdbcReport(JdbcTemplate jdbcTemplate) {
+    public JdbcReportVO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

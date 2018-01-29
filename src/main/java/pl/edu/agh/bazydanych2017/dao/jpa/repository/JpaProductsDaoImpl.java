@@ -1,18 +1,15 @@
-package pl.edu.agh.bazydanych2017.dao.jpa;
+package pl.edu.agh.bazydanych2017.dao.jpa.repository;
 
 import org.apache.log4j.Logger;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import pl.edu.agh.bazydanych2017.dao.JpaProductRepository;
+import pl.edu.agh.bazydanych2017.dao.jpa.JpaProductsDao;
 import pl.edu.agh.bazydanych2017.model.Products;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-public class JpaProductsDaoImpl implements JpaProductsDao{
+public class JpaProductsDaoImpl implements JpaProductsDao {
 
     private final JpaProductRepository jpaProductRepository;
     private final Logger logger = Logger.getLogger(JpaProductsDaoImpl.class);
@@ -21,33 +18,34 @@ public class JpaProductsDaoImpl implements JpaProductsDao{
         this.jpaProductRepository = jpaProductRepository;
     }
 
-    //todo: zmienić nazwę zwracanej zmiennej
     @Override
     public List<Products> listProductsSortedByProductName() {
         long StartTime = System.nanoTime();
-        List<Products> productList = jpaProductRepository.findAll(new Sort(Sort.Direction.ASC, "productname"));
+        List<Products> listSortedProducts = jpaProductRepository.findAll(new Sort(Sort.Direction.ASC, "productname"));
         long EndTime = System.nanoTime();
         long output = EndTime - StartTime;
         logger.info("JPA list Sorted Products - time " + output/ 1000000000.0);
-        return productList;
+        return listSortedProducts;
     }
-//todo: zła nazwa metody ma być z małej litery
-    public List<Products> TimelistProductsSortedByProductName() {
+
+    @Override
+    public List<Products> timeListProductsSortedByProductName() {
         List<Products> productList = jpaProductRepository.findAll(new Sort(Sort.Direction.ASC, "productname"));
         return productList;
     }
 
-    //todo: zmienić nazwę zwracanej zmiennej
     @Override
     public Products findProductByProductName(String productName) {
         long StartTime = System.nanoTime();
-        Products chai = jpaProductRepository.findByProductname(productName);
+        Products product = jpaProductRepository.findByProductname(productName);
         long EndTime = System.nanoTime();
         long output = EndTime - StartTime;
         logger.info("JPA find by product name - time "+ output);
-        return chai;
+        return product;
     }
 
+
+    @Override
     public Products timeFindProductByProductName(String productName) {
         Products chai = jpaProductRepository.findByProductname(productName);
         return chai;
@@ -63,7 +61,12 @@ public class JpaProductsDaoImpl implements JpaProductsDao{
         return beverages;
     }
 
-    //transakcja step 1
+    @Override
+    public int timeChangeProductsUnitPriceForCategoryname(String categoryname, Double addToUnitPrice) {
+        int beverages = jpaProductRepository.changeProductsUnitPriceForCategoryname(categoryname, addToUnitPrice);
+        return beverages;
+    }
+
     @Override
     public int removeForeignKeyCategoryidFromProducts(String categoryname){
         long StartTime = System.nanoTime();
@@ -73,7 +76,6 @@ public class JpaProductsDaoImpl implements JpaProductsDao{
         logger.info("JPA set null in products categoryid - time "+ output);
         return i;
     }
-    //transakcja step2
 
     @Override
     public int setCategoryidWhereCategoryidIsNull(String categoryname) {

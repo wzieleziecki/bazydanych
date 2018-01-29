@@ -2,6 +2,7 @@ package pl.edu.agh.bazydanych2017.dao.jdbc;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import pl.edu.agh.bazydanych2017.dao.jdbc.repository.JdbcOrderDetailDao;
 import pl.edu.agh.bazydanych2017.model.OrderDetail;
 import pl.edu.agh.bazydanych2017.model.OrderDetailPK;
 

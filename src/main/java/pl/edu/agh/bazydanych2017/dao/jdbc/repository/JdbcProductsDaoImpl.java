@@ -1,4 +1,4 @@
-package pl.edu.agh.bazydanych2017.dao.jdbc;
+package pl.edu.agh.bazydanych2017.dao.jdbc.repository;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.support.TransactionTemplate;
+import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcProductsDao;
 import pl.edu.agh.bazydanych2017.model.Categories;
 import pl.edu.agh.bazydanych2017.model.Products;
 import pl.edu.agh.bazydanych2017.model.Suppliers;
@@ -56,13 +57,14 @@ public class JdbcProductsDaoImpl implements JdbcProductsDao {
                 "JOIN categories ON categories.CategoryID = products.CategoryID \n" +
                 "WHERE ProductName = ?";
         long StartTime = System.nanoTime();
-        Products products = jdbcTemplate.queryForObject(sql, productsRowMapper, productname);
+        Products product = jdbcTemplate.queryForObject(sql, productsRowMapper, productname);
         long EndTime = System.nanoTime();
         long output = EndTime - StartTime;
         logger.info("JDBC find by product name - time "+ output);
-        return products;
+        return product;
     }
 
+    @Override
     public Products timeFindProductByProductName(String productname) {
         String sql = "SELECT ProductID, ProductName, SupplierID, categoryname AS CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued  FROM northwind.products \n" +
                 "JOIN categories ON categories.CategoryID = products.CategoryID \n" +
@@ -71,6 +73,7 @@ public class JdbcProductsDaoImpl implements JdbcProductsDao {
         return products;
     }
 
+    @Override
     public Products listDetailInformationForInvoicePurpose(String productname) {
         String sql = "SELECT ProductID, ProductName, SupplierID, categoryname AS CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued  FROM northwind.products \n" +
                 "JOIN categories ON categories.CategoryID = products.CategoryID \n" +
@@ -90,7 +93,7 @@ public class JdbcProductsDaoImpl implements JdbcProductsDao {
         }
 
     @Override
-    public List<Products> TimelistProductsSortedByProductName() {
+    public List<Products> timeListProductsSortedByProductName() {
         String sql = "SELECT * FROM products order by ProductName asc";
         List<Products> productList = jdbcTemplate.query(sql, productsRowMapper);
         return productList;
@@ -99,7 +102,6 @@ public class JdbcProductsDaoImpl implements JdbcProductsDao {
     @Override
     public int changeProductsUnitPriceForCategoryname(String categroryname, Double addToUnitPrice) {
         String sql = "UPDATE Products SET UnitPrice = (UnitPrice + :addToUnitPrice) WHERE CategoryID = (SELECT categories.CategoryID FROM categories WHERE categories.CategoryName = :categroryname)";
-        //todo: zmienić sposób podawania argumentów
         SqlParameterSource parameter = new MapSqlParameterSource("addToUnitPrice",addToUnitPrice).addValue("categroryname",categroryname);
         long StartTime = System.nanoTime();
         int update = namedParameterJdbcTemplate.update(sql, parameter);
@@ -108,11 +110,13 @@ public class JdbcProductsDaoImpl implements JdbcProductsDao {
         logger.info("JDBC change unit price for category name - time "+ output);
         return update;
     }
-
-
-    //todo: insert
-
-    //todo: insert
+    @Override
+    public int timeChangeProductsUnitPriceForCategoryname(String categroryname, Double addToUnitPrice) {
+        String sql = "UPDATE Products SET UnitPrice = (UnitPrice + :addToUnitPrice) WHERE CategoryID = (SELECT categories.CategoryID FROM categories WHERE categories.CategoryName = :categroryname)";
+        SqlParameterSource parameter = new MapSqlParameterSource("addToUnitPrice",addToUnitPrice).addValue("categroryname",categroryname);
+        int update = namedParameterJdbcTemplate.update(sql, parameter);
+        return update;
+    }
     @Override
     public int createNewProduct(String productname, String companyname, String categoryname, String quantityperunit, Double unitprice, Long unitsinstock, Long unitsonorder, Long reorderlevel, boolean discontinued) {
         String sql = ("INSERT INTO " +
@@ -136,7 +140,7 @@ public class JdbcProductsDaoImpl implements JdbcProductsDao {
                 ":unitsonorder,\n" +
                 ":reorderlevel, \n" +
                 ":discontinued)");
-        //todo: zmienić sposób podawania argumentów
+
         SqlParameterSource parameter = new MapSqlParameterSource(
                           "productname",productname)
                 .addValue("companyname",companyname)
@@ -156,9 +160,46 @@ public class JdbcProductsDaoImpl implements JdbcProductsDao {
     }
 
     @Override
+    public int timeCreateNewProduct(String productname, String companyname, String categoryname, String quantityperunit, Double unitprice, Long unitsinstock, Long unitsonorder, Long reorderlevel, boolean discontinued) {
+        String sql = ("INSERT INTO " +
+                "products \n" +
+                "(ProductName, \n" +
+                "SupplierID, \n" +
+                "CategoryID, \n" +
+                "QuantityPerUnit, \n" +
+                "UnitPrice, \n" +
+                "UnitsInStock,\n" +
+                "UnitsOnOrder, \n" +
+                "ReorderLevel, \n" +
+                "Discontinued ) \n" +
+                "VALUES \n" +
+                "(:productname, \n" +
+                "(SELECT max(supplierid) FROM northwind.suppliers WHERE CompanyName = :companyname) , \n" +
+                "(SELECT max(categoryid) FROM NORTHWINd.categories WHERE CategoryName = :categoryname), \n" +
+                ":quantityperunit, \n" +
+                ":unitprice, \n" +
+                ":unitsinstock, \n" +
+                ":unitsonorder,\n" +
+                ":reorderlevel, \n" +
+                ":discontinued)");
+
+        SqlParameterSource parameter = new MapSqlParameterSource(
+                "productname",productname)
+                .addValue("companyname",companyname)
+                .addValue("categoryname", categoryname)
+                .addValue("quantityperunit",quantityperunit)
+                .addValue("unitprice", unitprice)
+                .addValue("unitsinstock", unitsinstock)
+                .addValue("unitsonorder", unitsonorder)
+                .addValue("reorderlevel", reorderlevel)
+                .addValue("discontinued", discontinued);
+                int update = namedParameterJdbcTemplate.update(sql, parameter);
+        return update;
+    }
+
+    @Override
     public int removeForeignKeyCategoryidFromProducts(String categroryname) {
         String sql = "update products set categoryid = null where CategoryID = (SELECT CategoryID FROM categories WHERE CategoryName = :categroryname)";
-        //todo: zmienić sposób podawania argumentów
         SqlParameterSource parameter = new MapSqlParameterSource("categroryname",categroryname);
         return namedParameterJdbcTemplate.update(sql,parameter);
     }
@@ -166,7 +207,6 @@ public class JdbcProductsDaoImpl implements JdbcProductsDao {
     @Override
     public int deleteProductByProductname(String productname) {
         String sql = "delete from northwind.products where ProductName = :productname";
-        //todo: zmienić sposób podawania argumentów
         SqlParameterSource parameter = new MapSqlParameterSource("productname",productname);
         return namedParameterJdbcTemplate.update(sql,parameter);
     }
@@ -174,7 +214,6 @@ public class JdbcProductsDaoImpl implements JdbcProductsDao {
     @Override
     public int setCategoryidWhereCategoryidIsNull(String categroryname) {
         String sql = "update products set categoryid = (SELECT CategoryID FROM categories WHERE CategoryName = :categroryname) WHERE CategoryID is NULL ";
-        //todo: zmienić sposób podawania argumentów
         SqlParameterSource parameter = new MapSqlParameterSource("categroryname",categroryname);
         return namedParameterJdbcTemplate.update(sql,parameter);
     }

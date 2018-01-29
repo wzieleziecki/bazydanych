@@ -1,15 +1,15 @@
-package pl.edu.agh.bazydanych2017.dao.jpa;
+package pl.edu.agh.bazydanych2017.dao.jpa.repository;
 
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import pl.edu.agh.bazydanych2017.dao.JpaCategoriesDao;
+import pl.edu.agh.bazydanych2017.dao.jpa.JpaCategoriesDao;
 import pl.edu.agh.bazydanych2017.model.Categories;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-@Component
+@Repository
 public class JpaCategoriesDaoImpl implements JpaCategoriesDao{
 
     private final JpaCategoriesRepository jpaCategoriesRepository;
@@ -22,7 +22,6 @@ public class JpaCategoriesDaoImpl implements JpaCategoriesDao{
     @PersistenceContext
     private EntityManager em;
 
-    //transakcja krok 2
     @Override
     public int deleteCategoryByCategoryname(String categoryname){
         long StartTime = System.nanoTime();
@@ -33,7 +32,6 @@ public class JpaCategoriesDaoImpl implements JpaCategoriesDao{
         return i;
     }
 
-    //transakcja step 3
     @Override
     @Transactional
     public void createNewCategory(String categoryname, String description){

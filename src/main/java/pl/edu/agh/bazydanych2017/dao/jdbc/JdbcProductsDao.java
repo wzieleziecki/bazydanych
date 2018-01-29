@@ -16,6 +16,11 @@ public interface JdbcProductsDao {
     int removeForeignKeyCategoryidFromProducts(String categroryname);
     int deleteProductByProductname(String productname);
     int setCategoryidWhereCategoryidIsNull(String categroryname);
-    List<Products> TimelistProductsSortedByProductName();
+    List<Products> timeListProductsSortedByProductName();
+    int timeChangeProductsUnitPriceForCategoryname(String categroryname, Double addToUnitPrice);
+    int timeCreateNewProduct(String productname, String companyname, String categoryname, String quantityperunit, Double unitprice, Long unitsinstock, Long unitsonorder, Long reorderlevel, boolean discontinued);
+    Products listDetailInformationForInvoicePurpose(String productname);
+    Products timeFindProductByProductName(String productname);
+
 }
 

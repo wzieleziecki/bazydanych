@@ -1,7 +1,5 @@
 package pl.edu.agh.bazydanych2017.model;
 
-import org.springframework.stereotype.Component;
-
 public class Report {
     private String shipName;
     private String shipAddress;

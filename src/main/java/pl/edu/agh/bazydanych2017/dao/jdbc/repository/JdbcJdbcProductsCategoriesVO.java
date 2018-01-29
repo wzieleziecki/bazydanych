@@ -1,22 +1,21 @@
-package pl.edu.agh.bazydanych2017.dao.jdbc;
+package pl.edu.agh.bazydanych2017.dao.jdbc.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import pl.edu.agh.bazydanych2017.dao.ProductsCategoriesVODao;
+import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcProductsCategoriesVODao;
 import pl.edu.agh.bazydanych2017.model.ProductsCategoriesVO;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Repository
-public class JdbcProductsCategoriesVO implements ProductsCategoriesVODao{
+public class JdbcJdbcProductsCategoriesVO implements JdbcProductsCategoriesVODao {
 
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public JdbcProductsCategoriesVO(JdbcTemplate jdbcTemplate) {
+    public JdbcJdbcProductsCategoriesVO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 

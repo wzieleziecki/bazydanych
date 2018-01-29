@@ -21,4 +21,10 @@ public interface JpaProductsDao {
 
     int setCategoryidWhereCategoryidIsNull(String categoryname);
 
+    int timeChangeProductsUnitPriceForCategoryname(String categoryname, Double addToUnitPrice);
+
+    List<Products> timeListProductsSortedByProductName();
+
+    Products timeFindProductByProductName(String productName);
+
 }

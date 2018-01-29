@@ -5,7 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.List;
-//todo: https://stackoverflow.com/questions/48482525/error-onetoone-or-manytoone-references-an-unknown-entity
 @Entity
 public class Customers {
   @Id

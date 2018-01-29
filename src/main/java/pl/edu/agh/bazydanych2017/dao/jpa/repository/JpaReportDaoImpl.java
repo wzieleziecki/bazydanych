@@ -1,6 +1,7 @@
-package pl.edu.agh.bazydanych2017.dao.jpa;
+package pl.edu.agh.bazydanych2017.dao.jpa.repository;
 
 import org.springframework.stereotype.Repository;
+import pl.edu.agh.bazydanych2017.dao.jpa.JpaReportDao;
 import pl.edu.agh.bazydanych2017.model.Report;
 
 import javax.persistence.EntityManager;
@@ -9,13 +10,13 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Repository
-public class JpaReportDaoImpl {
+public class JpaReportDaoImpl implements JpaReportDao {
 
     @PersistenceContext
     private EntityManager em;
 
+    @Override
     public List<Report> detailInformationForInvoicePurpose(){
-        //todo: https://stackoverflow.com/questions/48485707/select-join-using-namednativequeries-on-non-entity-class
         Query query = em.createNativeQuery("SELECT DISTINCT b.ShipName, \n" +
                 "    b.ShipAddress, \n" +
                         "    b.ShipCity, \n" +

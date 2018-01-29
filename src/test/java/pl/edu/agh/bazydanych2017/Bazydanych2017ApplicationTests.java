@@ -4,14 +4,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Repository;
 import org.springframework.test.context.junit4.SpringRunner;
-import pl.edu.agh.bazydanych2017.dao.JpaProductRepository;
+import pl.edu.agh.bazydanych2017.dao.jpa.repository.JpaProductRepository;
 import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcProductsDao;
 import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcReportDao;
 import pl.edu.agh.bazydanych2017.dao.jpa.JpaProductsDao;
-import pl.edu.agh.bazydanych2017.dao.jpa.JpaReportDaoImpl;
+import pl.edu.agh.bazydanych2017.dao.jpa.repository.JpaReportDaoImpl;
 import pl.edu.agh.bazydanych2017.model.Products;
 import pl.edu.agh.bazydanych2017.model.Report;
 
@@ -61,28 +59,28 @@ public class Bazydanych2017ApplicationTests {
 	//test select
 	@Test
 	public void checkIfQueryFindByProductnameIsEqualsInJpaJdbc(){
-		//given
+
 		Products jdbcChai = jdbcProductDao.findProductByProductName("Chai");
 		Products jpaChai = jpaProductRepository.findByProductname("Chai");
-		//then
+
 		assertThat(jdbcChai).isEqualTo(jpaChai);
 	}
 
 	@Test
-	public void checkIfQueryFindAllIsEqualsInJpaJdbc(){
-		//given
+	public void checkIfQueryFindAllSortedIsEqualsInJpaJdbc(){
+
 		List<Products> jdbcProducts = jdbcProductDao.listProductsSortedByProductName();
 		List<Products> jpaProducts = jpaProductsDao.listProductsSortedByProductName();
-		//then
+
 		assertThat(jdbcProducts).isEqualTo(jpaProducts);
 	}
 
 	@Test
 	public void checkIfQueryReportIsEqualsInJpaJdbc(){
-		//given
+
 		List<Report> jpaReports = jpaReportDaoImpl.detailInformationForInvoicePurpose();
 		List<Report> jdbcReports = jdbcReportDao.detailInformationForInvoicePurpose();
-		//then
+
 		assertThat(jpaReports).isEqualTo(jdbcReports);
 	}
 	//test update

@@ -1,17 +1,20 @@
-package pl.edu.agh.bazydanych2017.dao.jdbc;
+package pl.edu.agh.bazydanych2017.dao.jdbc.repository;
 
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
-import pl.edu.agh.bazydanych2017.dao.jpa.JpaProductsDaoImpl;
+import org.springframework.stereotype.Repository;
+import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcCategoriesDao;
+import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcProductsDao;
+import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcTransactionDao;
+import pl.edu.agh.bazydanych2017.dao.jpa.repository.JpaProductsDaoImpl;
 
-@Component
-public class JdbcTransactionImpl implements JdbcTransaction {
+@Repository
+public class JdbcTransactionDaoImpl implements JdbcTransactionDao {
 
     private final JdbcProductsDao jdbcProductDao;
     private final JdbcCategoriesDao jdbcCategoriesDao;
     private final Logger logger = Logger.getLogger(JpaProductsDaoImpl.class);
 
-    public JdbcTransactionImpl(JdbcProductsDao jdbcProductDao, JdbcCategoriesDao jdbcCategoriesDao) {
+    public JdbcTransactionDaoImpl(JdbcProductsDao jdbcProductDao, JdbcCategoriesDao jdbcCategoriesDao) {
         this.jdbcProductDao = jdbcProductDao;
         this.jdbcCategoriesDao = jdbcCategoriesDao;
     }

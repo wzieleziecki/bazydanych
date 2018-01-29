@@ -1,4 +1,4 @@
-package pl.edu.agh.bazydanych2017.dao;
+package pl.edu.agh.bazydanych2017.dao.jpa;
 
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
