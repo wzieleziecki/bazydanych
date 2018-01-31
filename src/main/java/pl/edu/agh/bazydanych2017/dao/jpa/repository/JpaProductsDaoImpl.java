@@ -18,18 +18,18 @@ public class JpaProductsDaoImpl implements JpaProductsDao {
         this.jpaProductRepository = jpaProductRepository;
     }
 
-    @Override
-    public List<Products> listProductsSortedByProductName() {
-        long StartTime = System.nanoTime();
-        List<Products> listSortedProducts = jpaProductRepository.findAll(new Sort(Sort.Direction.ASC, "productname"));
-        long EndTime = System.nanoTime();
-        long output = EndTime - StartTime;
-        logger.info("JPA list Sorted Products - time " + output/ 1000000000.0);
-        return listSortedProducts;
-    }
+//    @Override
+//    public List<Products> listProductsSortedByProductName() {
+//        long StartTime = System.nanoTime();
+//        List<Products> listSortedProducts = jpaProductRepository.findAll(new Sort(Sort.Direction.ASC, "productname"));
+//        long EndTime = System.nanoTime();
+//        long output = EndTime - StartTime;
+//        logger.info("JPA list Sorted Products - time " + output/ 1000000000.0);
+//        return listSortedProducts;
+//    }
 
     @Override
-    public List<Products> timeListProductsSortedByProductName() {
+    public List<Products> listProductsSortedByProductName() {
         List<Products> productList = jpaProductRepository.findAll(new Sort(Sort.Direction.ASC, "productname"));
         return productList;
     }

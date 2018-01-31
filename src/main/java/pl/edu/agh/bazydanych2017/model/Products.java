@@ -10,10 +10,10 @@ public class Products {
   private Long productid;
   private String productname;
   @JoinColumn(name = "supplierid", referencedColumnName = "SupplierID")
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   private Suppliers supplierid;
   @JoinColumn(name = "categoryid", referencedColumnName = "CategoryID")
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   private Categories categoryid;
   private String quantityperunit;
   private Double unitprice;
@@ -21,10 +21,6 @@ public class Products {
   private Long unitsonorder;
   private Long reorderlevel;
   private Boolean discontinued;
-
-  @OneToMany(mappedBy="productid")
-  private List<Products> products;
-
 
   public Products() {
   }

@@ -1,27 +1,31 @@
 package pl.edu.agh.bazydanych2017;
 
 import org.springframework.stereotype.Component;
+import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcProductsDao;
 import pl.edu.agh.bazydanych2017.dao.jdbc.repository.JdbcProductsDaoImpl;
-import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcReportDao;
+import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcReportView;
+import pl.edu.agh.bazydanych2017.dao.jpa.JpaProductsDao;
+import pl.edu.agh.bazydanych2017.dao.jpa.JpaReportView;
 import pl.edu.agh.bazydanych2017.dao.jpa.repository.JpaProductsDaoImpl;
-import pl.edu.agh.bazydanych2017.dao.jpa.repository.JpaReportDaoImpl;
+import pl.edu.agh.bazydanych2017.dao.jpa.repository.JpaReportViewImpl;
 import pl.edu.agh.bazydanych2017.dao.jpa.JpaTransactionDao;
 
 import java.util.Arrays;
 @Component
 public class TimeCounterImpl implements TimeCounter {
 
-    private JpaProductsDaoImpl jpaProductsDaoImpl;
-    private JdbcProductsDaoImpl jdbcProductsDaoImpl;
-    private JpaReportDaoImpl jpaReportDaoImpl;
-    private JdbcReportDao jdbcReportDao;
+    //todo: uporządkować interfejsy
+    private JpaProductsDao jpaProductsDao;
+    private JdbcProductsDao jdbcProductsDao;
+    private JpaReportView jpaReportView;
+    private JdbcReportView jdbcReportView;
     private JpaTransactionDao jpaTransactionDao;
 
-    public TimeCounterImpl(JpaProductsDaoImpl jpaProductsDaoImpl, JdbcProductsDaoImpl jdbcProductsDaoImpl, JpaReportDaoImpl jpaReportDaoImpl, JdbcReportDao jdbcReportDao, JpaTransactionDao jpaTransactionDao) {
-        this.jpaProductsDaoImpl = jpaProductsDaoImpl;
-        this.jdbcProductsDaoImpl = jdbcProductsDaoImpl;
-        this.jpaReportDaoImpl = jpaReportDaoImpl;
-        this.jdbcReportDao = jdbcReportDao;
+    public TimeCounterImpl(JpaProductsDaoImpl jpaProductsDao, JdbcProductsDaoImpl jdbcProductsDao, JpaReportViewImpl jpaReportDao, JdbcReportView jdbcReportView, JpaTransactionDao jpaTransactionDao) {
+        this.jpaProductsDao = jpaProductsDao;
+        this.jdbcProductsDao = jdbcProductsDao;
+        this.jpaReportView = jpaReportDao;
+        this.jdbcReportView = jdbcReportView;
         this.jpaTransactionDao = jpaTransactionDao;
     }
 
@@ -33,7 +37,7 @@ public class TimeCounterImpl implements TimeCounter {
         for(int i=0; i < numberOfTest; i++)
         {
             long StartTime = System.nanoTime();
-                jpaProductsDaoImpl.timeListProductsSortedByProductName();
+                jpaProductsDao.listProductsSortedByProductName();
             long EndTime = System.nanoTime();
             long output = EndTime - StartTime;
             //todo: przerobić na logowanie
@@ -50,7 +54,7 @@ public class TimeCounterImpl implements TimeCounter {
          long[] time = new long[numberOfTest];
          for (int i = 0; i < numberOfTest; i++) {
              long StartTime = System.nanoTime();
-             jdbcProductsDaoImpl.timeListProductsSortedByProductName();
+             jdbcProductsDao.listProductsSortedByProductName();
              long EndTime = System.nanoTime();
              long output = EndTime - StartTime;
              time[i] = output;
@@ -68,7 +72,7 @@ public class TimeCounterImpl implements TimeCounter {
         for (int i = 0; i < numberOfTest; i++) {
             long StartTime = System.nanoTime();
             //todo: dlaczego pracuję na implementacji a nie interfejsie
-            jpaProductsDaoImpl.timeFindProductByProductName(productname);
+            jpaProductsDao.timeFindProductByProductName(productname);
             long EndTime = System.nanoTime();
             long output = EndTime - StartTime;
             time[i] = output;
@@ -82,7 +86,7 @@ public class TimeCounterImpl implements TimeCounter {
         long[] time = new long[numberOfTest];
         for (int i = 0; i < numberOfTest; i++) {
             long StartTime = System.nanoTime();
-            jdbcProductsDaoImpl.timeFindProductByProductName(productname);
+            jdbcProductsDao.timeFindProductByProductName(productname);
             long EndTime = System.nanoTime();
             long output = EndTime - StartTime;
             time[i] = output;
@@ -99,7 +103,7 @@ public class TimeCounterImpl implements TimeCounter {
         long[] time = new long[numberOfTest];
         for (int i = 0; i < numberOfTest; i++) {
             long StartTime = System.nanoTime();
-            jdbcReportDao.detailInformationForInvoicePurpose();
+            jdbcReportView.detailInformationForInvoice();
             long EndTime = System.nanoTime();
             long output = EndTime - StartTime;
             time[i] = output;
@@ -113,7 +117,7 @@ public class TimeCounterImpl implements TimeCounter {
         long[] time = new long[numberOfTest];
         for (int i = 0; i < numberOfTest; i++) {
             long StartTime = System.nanoTime();
-            jpaReportDaoImpl.detailInformationForInvoicePurpose();
+            jpaReportView.detailInformationForInvoice();
             long EndTime = System.nanoTime();
             long output = EndTime - StartTime;
             time[i] = output;
@@ -130,7 +134,7 @@ public class TimeCounterImpl implements TimeCounter {
         long[] time = new long[numberOfTest];
         for (int i = 0; i < numberOfTest; i++) {
             long StartTime = System.nanoTime();
-            jdbcProductsDaoImpl.timeChangeProductsUnitPriceForCategoryname(categoryname, addToUnitPrice);
+            jdbcProductsDao.timeChangeProductsUnitPriceForCategoryname(categoryname, addToUnitPrice);
             long EndTime = System.nanoTime();
             long output = EndTime - StartTime;
             time[i] = output;
@@ -144,7 +148,7 @@ public class TimeCounterImpl implements TimeCounter {
         long[] time = new long[numberOfTest];
         for (int i = 0; i < numberOfTest; i++) {
             long StartTime = System.nanoTime();
-            jpaProductsDaoImpl.timeChangeProductsUnitPriceForCategoryname(categoryname, addToUnitPrice);
+            jpaProductsDao.timeChangeProductsUnitPriceForCategoryname(categoryname, addToUnitPrice);
             long EndTime = System.nanoTime();
             long output = EndTime - StartTime;
             time[i] = output;
@@ -174,7 +178,7 @@ public class TimeCounterImpl implements TimeCounter {
         long[] time = new long[numberOfTest];
         for (int i = 0; i < numberOfTest; i++) {
             long StartTime = System.nanoTime();
-            jdbcProductsDaoImpl.timeCreateNewProduct( productname, companyname, categoryname, quantityperunit, unitprice, unitsinstock, unitsonorder, reorderlevel, discontinued);
+            jdbcProductsDao.timeCreateNewProduct( productname, companyname, categoryname, quantityperunit, unitprice, unitsinstock, unitsonorder, reorderlevel, discontinued);
             long EndTime = System.nanoTime();
             long output = EndTime - StartTime;
             time[i] = output;

@@ -4,7 +4,7 @@ import pl.edu.agh.bazydanych2017.model.Report;
 
 import java.util.List;
 
-public interface JdbcReportDao  {
+public interface JdbcReportView {
 
-    List<Report> detailInformationForInvoicePurpose();
+    List<Report> detailInformationForInvoice();
 }

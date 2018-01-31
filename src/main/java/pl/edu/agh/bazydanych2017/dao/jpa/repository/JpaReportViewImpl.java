@@ -1,7 +1,7 @@
 package pl.edu.agh.bazydanych2017.dao.jpa.repository;
 
 import org.springframework.stereotype.Repository;
-import pl.edu.agh.bazydanych2017.dao.jpa.JpaReportDao;
+import pl.edu.agh.bazydanych2017.dao.jpa.JpaReportView;
 import pl.edu.agh.bazydanych2017.model.Report;
 
 import javax.persistence.EntityManager;
@@ -10,13 +10,13 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Repository
-public class JpaReportDaoImpl implements JpaReportDao {
+public class JpaReportViewImpl implements JpaReportView {
 
     @PersistenceContext
     private EntityManager em;
 
     @Override
-    public List<Report> detailInformationForInvoicePurpose(){
+    public List<Report> detailInformationForInvoice(){
         Query query = em.createNativeQuery("SELECT DISTINCT b.ShipName, \n" +
                 "    b.ShipAddress, \n" +
                         "    b.ShipCity, \n" +

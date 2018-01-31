@@ -5,11 +5,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import pl.edu.agh.bazydanych2017.dao.jpa.JpaReportView;
 import pl.edu.agh.bazydanych2017.dao.jpa.repository.JpaProductRepository;
 import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcProductsDao;
-import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcReportDao;
+import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcReportView;
 import pl.edu.agh.bazydanych2017.dao.jpa.JpaProductsDao;
-import pl.edu.agh.bazydanych2017.dao.jpa.repository.JpaReportDaoImpl;
+import pl.edu.agh.bazydanych2017.dao.jpa.repository.JpaReportViewImpl;
 import pl.edu.agh.bazydanych2017.model.Products;
 import pl.edu.agh.bazydanych2017.model.Report;
 
@@ -24,8 +25,8 @@ public class Bazydanych2017ApplicationTests {
 	private JdbcProductsDao jdbcProductDao;
 	private JpaProductsDao jpaProductsDao;
 	private JpaProductRepository jpaProductRepository;
-	private JpaReportDaoImpl jpaReportDaoImpl;
-	private JdbcReportDao jdbcReportDao;
+	private JpaReportView jpaReportView;
+	private JdbcReportView jdbcReportView;
 
 	@Autowired
 	public void setJdbcProductsDao(JdbcProductsDao jdbcProductDao) {
@@ -43,13 +44,13 @@ public class Bazydanych2017ApplicationTests {
 	}
 
 	@Autowired
-	public void setJpaReportDaoImpl(JpaReportDaoImpl jpaReportDaoImpl) {
-		this.jpaReportDaoImpl = jpaReportDaoImpl;
+	public void setJpaReportView(JpaReportViewImpl jpaReportView) {
+		this.jpaReportView = jpaReportView;
 	}
 
 	@Autowired
-	public void setJdbcReportDao(JdbcReportDao jdbcReportDao) {
-		this.jdbcReportDao = jdbcReportDao;
+	public void setJdbcReportView(JdbcReportView jdbcReportView) {
+		this.jdbcReportView = jdbcReportView;
 	}
 
 	@Test
@@ -78,8 +79,8 @@ public class Bazydanych2017ApplicationTests {
 	@Test
 	public void checkIfQueryReportIsEqualsInJpaJdbc(){
 
-		List<Report> jpaReports = jpaReportDaoImpl.detailInformationForInvoicePurpose();
-		List<Report> jdbcReports = jdbcReportDao.detailInformationForInvoicePurpose();
+		List<Report> jpaReports = jpaReportView.detailInformationForInvoice();
+		List<Report> jdbcReports = jdbcReportView.detailInformationForInvoice();
 
 		assertThat(jpaReports).isEqualTo(jdbcReports);
 	}

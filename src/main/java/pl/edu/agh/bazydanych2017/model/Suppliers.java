@@ -147,6 +147,10 @@ public class Suppliers {
     return homepage;
   }
 
+  public void setHomepage(String homepage) {
+    this.homepage = homepage;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -169,7 +173,4 @@ public class Suppliers {
             '}';
   }
 
-  public void setHomepage(String homepage) {
-    this.homepage = homepage;
-  }
 }

@@ -4,19 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcReportDao;
+import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcReportView;
 import pl.edu.agh.bazydanych2017.model.Report;
 
 import java.util.List;
 
 @Repository
-public class JdbcReportVO implements JdbcReportDao
+public class JdbcReportViewImpl implements JdbcReportView
 {
 
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public JdbcReportVO(JdbcTemplate jdbcTemplate) {
+    public JdbcReportViewImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -52,7 +52,7 @@ public class JdbcReportVO implements JdbcReportDao
         };
 
     @Override
-    public List<Report> detailInformationForInvoicePurpose() {
+    public List<Report> detailInformationForInvoice() {
         String sql = "SELECT DISTINCT b.ShipName, \n" +
                 "    b.ShipAddress, \n" +
                 "    b.ShipCity, \n" +
@@ -86,7 +86,8 @@ public class JdbcReportVO implements JdbcReportDao
                 "INNER JOIN Order_Details e ON b.OrderID = e.OrderID\n" +
                 "INNER JOIN Products f ON f.ProductID = e.ProductID\n" +
                 "ORDER BY b.ShipName";
-        return jdbcTemplate.query(sql, jdbcReportRowMapper);
+        List<Report> result = jdbcTemplate.query(sql, jdbcReportRowMapper);
+        return result;
     }
 }
 

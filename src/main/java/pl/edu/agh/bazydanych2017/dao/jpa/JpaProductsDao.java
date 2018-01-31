@@ -23,8 +23,6 @@ public interface JpaProductsDao {
 
     int timeChangeProductsUnitPriceForCategoryname(String categoryname, Double addToUnitPrice);
 
-    List<Products> timeListProductsSortedByProductName();
-
     Products timeFindProductByProductName(String productName);
 
 }

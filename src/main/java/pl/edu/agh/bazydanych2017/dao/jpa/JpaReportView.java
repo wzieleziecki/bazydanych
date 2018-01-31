@@ -4,6 +4,6 @@ import pl.edu.agh.bazydanych2017.model.Report;
 
 import java.util.List;
 
-public interface JpaReportDao {
-    List<Report> detailInformationForInvoicePurpose();
+public interface JpaReportView {
+    List<Report> detailInformationForInvoice();
 }

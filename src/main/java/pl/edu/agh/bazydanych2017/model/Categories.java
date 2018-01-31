@@ -28,8 +28,7 @@ public class Categories {
     }
 
 
-
-    public Long getCategoryid() {
+  public Long getCategoryid() {
     return categoryid;
   }
 

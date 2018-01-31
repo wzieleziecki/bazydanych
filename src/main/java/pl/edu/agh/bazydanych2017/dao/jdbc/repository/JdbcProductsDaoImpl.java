@@ -81,19 +81,19 @@ public class JdbcProductsDaoImpl implements JdbcProductsDao {
         Products products = jdbcTemplate.queryForObject(sql, productsRowMapper, productname);
         return products;
     }
+//    @Override
+//    public List<Products> listProductsSortedByProductName(){
+//        String sql = "SELECT * FROM products order by ProductName asc";
+//        long StartTime = System.nanoTime();
+//        List<Products> listSortedProducts = jdbcTemplate.query(sql, productsRowMapper);
+//        long EndTime = System.nanoTime();
+//        long output = EndTime - StartTime;
+//        logger.info("JDBC list Sorted Products - time "+ output / 1000000000.0);
+//        return listSortedProducts;
+//        }
+//todo: usunąć komentarze
     @Override
-    public List<Products> listProductsSortedByProductName(){
-        String sql = "SELECT * FROM products order by ProductName asc";
-        long StartTime = System.nanoTime();
-        List<Products> listSortedProducts = jdbcTemplate.query(sql, productsRowMapper);
-        long EndTime = System.nanoTime();
-        long output = EndTime - StartTime;
-        logger.info("JDBC list Sorted Products - time "+ output / 1000000000.0);
-        return listSortedProducts;
-        }
-
-    @Override
-    public List<Products> timeListProductsSortedByProductName() {
+    public List<Products>listProductsSortedByProductName() {
         String sql = "SELECT * FROM products order by ProductName asc";
         List<Products> productList = jdbcTemplate.query(sql, productsRowMapper);
         return productList;
