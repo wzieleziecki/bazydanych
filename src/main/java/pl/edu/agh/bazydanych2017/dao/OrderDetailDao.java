@@ -5,6 +5,8 @@ import pl.edu.agh.bazydanych2017.model.OrderDetailPK;
 
 import java.util.List;
 
+//todo: nie używane przeze mnie
+
 public interface OrderDetailDao extends GenericCrudDao<OrderDetail, OrderDetailPK> {
     List<OrderDetail> findByOrderId(long orderId);
 

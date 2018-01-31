@@ -5,16 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+import pl.edu.agh.bazydanych2017.dao.jdbc.repository.JdbcCustomerDaoImpl;
 import pl.edu.agh.bazydanych2017.model.Customer;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class JdbcCustomerDaoTest extends AbstractCrudDaoTest<JdbcCustomerDao, Customer, String> {
+public class JdbcCustomerDaoTest extends AbstractCrudDaoTest<JdbcCustomerDaoImpl, Customer, String> {
 
     @Autowired
     @Override
-    public void setCrudDao(JdbcCustomerDao crudDao) {
+    public void setCrudDao(JdbcCustomerDaoImpl crudDao) {
         this.crudDao = crudDao;
     }
 

@@ -2,6 +2,7 @@ package pl.edu.agh.bazydanych2017.dao.jdbc;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import pl.edu.agh.bazydanych2017.dao.jdbc.repository.JdbcJdbcOrderDao;
 import pl.edu.agh.bazydanych2017.model.Order;
 
 import java.math.BigDecimal;
@@ -12,7 +13,7 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class JdbcOrderDaoTest extends AbstractCrudDaoTest<JdbcOrderDao, Order, Long> {
+public class JdbcJdbcOrderDaoTest extends AbstractCrudDaoTest<JdbcJdbcOrderDao, Order, Long> {
 
     private static final Long[] ORDER_IDS_OF_EXISTING_CUSTOMER = {10643L, 10692L, 10702L, 10835L, 10952L, 11011L};
 
@@ -43,7 +44,7 @@ public class JdbcOrderDaoTest extends AbstractCrudDaoTest<JdbcOrderDao, Order, L
 
     @Autowired
     @Override
-    public void setCrudDao(JdbcOrderDao crudDao) {
+    public void setCrudDao(JdbcJdbcOrderDao crudDao) {
         this.crudDao = crudDao;
     }
 

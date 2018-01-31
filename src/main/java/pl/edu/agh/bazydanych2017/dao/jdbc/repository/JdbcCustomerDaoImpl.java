@@ -1,4 +1,4 @@
-package pl.edu.agh.bazydanych2017.dao.jdbc;
+package pl.edu.agh.bazydanych2017.dao.jdbc.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,11 +8,11 @@ import pl.edu.agh.bazydanych2017.dao.CustomerDao;
 import pl.edu.agh.bazydanych2017.model.Customer;
 
 @Repository
-public class JdbcCustomerDao implements CustomerDao {
+public class JdbcCustomerDaoImpl implements CustomerDao {
 
     private final JdbcTemplate jdbcTemplate;
 
-    private final JdbcOrderDao jdbcOrderDao;
+    private final JdbcJdbcOrderDao jdbcOrderDao;
 
     private static final RowMapper<Customer> customerRowMapper = (rs, rowNum) -> {
         Customer customer = new Customer();
@@ -31,7 +31,7 @@ public class JdbcCustomerDao implements CustomerDao {
     };
 
     @Autowired
-    public JdbcCustomerDao(JdbcTemplate jdbcTemplate, JdbcOrderDao jdbcOrderDao) {
+    public JdbcCustomerDaoImpl(JdbcTemplate jdbcTemplate, JdbcJdbcOrderDao jdbcOrderDao) {
         this.jdbcTemplate = jdbcTemplate;
         this.jdbcOrderDao = jdbcOrderDao;
     }

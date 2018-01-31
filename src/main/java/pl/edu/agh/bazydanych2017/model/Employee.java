@@ -9,7 +9,6 @@ import javax.persistence.Table;
 import java.sql.Timestamp;
 
 @Data
-@Entity
 @Table(name = "employees", schema = "northwind")
 public class Employee {
     @Id
