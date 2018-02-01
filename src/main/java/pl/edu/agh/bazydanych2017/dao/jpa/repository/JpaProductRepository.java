@@ -11,6 +11,8 @@ public interface JpaProductRepository extends JpaRepository<Products,Long> {
 
     Products findByProductname(String productname);
 
+    Products findByProductid(Long productid);
+
     @Transactional
     @Modifying
     @Query(value = "update Products p set p.unitprice = p.unitprice+ :addToUnitPrice where p.categoryid in (select c.categoryid from Categories c where c.categoryname = :categryname)")

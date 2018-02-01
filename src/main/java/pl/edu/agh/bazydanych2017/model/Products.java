@@ -120,8 +120,7 @@ public class Products {
   @Override
   public String toString() {
     return "Products{" +
-            "productid=" + productid +
-            ", productname='" + productname + '\'' +
+            "productname='" + productname + '\'' +
             ", supplierid=" + supplierid +
             ", categoryid=" + categoryid +
             ", quantityperunit='" + quantityperunit + '\'' +
@@ -129,22 +128,43 @@ public class Products {
             ", unitsinstock=" + unitsinstock +
             ", unitsonorder=" + unitsonorder +
             ", reorderlevel=" + reorderlevel +
-            ", discontinued='" + discontinued + '\'' +
+            ", discontinued=" + discontinued +
             '}';
   }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
 
-        Products products = (Products) o;
+    Products products = (Products) o;
 
-        return productid.equals(products.productid);
-    }
+    if (productname != null ? !productname.equals(products.productname) : products.productname != null) return false;
+    if (supplierid != null ? !supplierid.equals(products.supplierid) : products.supplierid != null) return false;
+    if (categoryid != null ? !categoryid.equals(products.categoryid) : products.categoryid != null) return false;
+    if (quantityperunit != null ? !quantityperunit.equals(products.quantityperunit) : products.quantityperunit != null)
+      return false;
+    if (unitprice != null ? !unitprice.equals(products.unitprice) : products.unitprice != null) return false;
+    if (unitsinstock != null ? !unitsinstock.equals(products.unitsinstock) : products.unitsinstock != null)
+      return false;
+    if (unitsonorder != null ? !unitsonorder.equals(products.unitsonorder) : products.unitsonorder != null)
+      return false;
+    if (reorderlevel != null ? !reorderlevel.equals(products.reorderlevel) : products.reorderlevel != null)
+      return false;
+    return discontinued != null ? discontinued.equals(products.discontinued) : products.discontinued == null;
+  }
 
-    @Override
-    public int hashCode() {
-        return productid.hashCode();
-    }
+  @Override
+  public int hashCode() {
+    int result = productname != null ? productname.hashCode() : 0;
+    result = 31 * result + (supplierid != null ? supplierid.hashCode() : 0);
+    result = 31 * result + (categoryid != null ? categoryid.hashCode() : 0);
+    result = 31 * result + (quantityperunit != null ? quantityperunit.hashCode() : 0);
+    result = 31 * result + (unitprice != null ? unitprice.hashCode() : 0);
+    result = 31 * result + (unitsinstock != null ? unitsinstock.hashCode() : 0);
+    result = 31 * result + (unitsonorder != null ? unitsonorder.hashCode() : 0);
+    result = 31 * result + (reorderlevel != null ? reorderlevel.hashCode() : 0);
+    result = 31 * result + (discontinued != null ? discontinued.hashCode() : 0);
+    return result;
+  }
 }

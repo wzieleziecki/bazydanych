@@ -9,10 +9,9 @@ public class OrderDetails implements Serializable{
   @GeneratedValue
   @JoinColumn(name = "orderid", referencedColumnName = "OrderID")
   @ManyToOne
-  private Order orderid;
+  private Orders orderid;
   @JoinColumn(name = "productid", referencedColumnName = "ProductID")
   @ManyToOne
-  //todo: umieścić w dokumnecacji jak mapować
   private Products productid;
   private Double unitprice;
   private Long quantity;
@@ -28,11 +27,11 @@ public class OrderDetails implements Serializable{
   public OrderDetails() {
   }
 
-  public Order getOrderid() {
+  public Orders getOrderid() {
     return orderid;
   }
 
-  public void setOrderid(Order orderid) {
+  public void setOrderid(Orders orderid) {
     this.orderid = orderid;
   }
 
