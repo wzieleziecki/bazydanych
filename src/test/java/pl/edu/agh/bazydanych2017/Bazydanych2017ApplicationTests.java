@@ -5,7 +5,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
+import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcTransactionDao;
 import pl.edu.agh.bazydanych2017.dao.jpa.JpaReportView;
+import pl.edu.agh.bazydanych2017.dao.jpa.JpaTransactionDao;
 import pl.edu.agh.bazydanych2017.dao.jpa.repository.JpaProductRepository;
 import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcProductsDao;
 import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcReportView;
@@ -13,6 +16,7 @@ import pl.edu.agh.bazydanych2017.dao.jpa.JpaProductsDao;
 import pl.edu.agh.bazydanych2017.dao.jpa.repository.JpaReportViewImpl;
 import pl.edu.agh.bazydanych2017.model.Products;
 import pl.edu.agh.bazydanych2017.model.Report;
+import pl.edu.agh.bazydanych2017.model.Suppliers;
 
 import java.util.List;
 
@@ -27,6 +31,7 @@ public class Bazydanych2017ApplicationTests {
 	private JpaProductRepository jpaProductRepository;
 	private JpaReportView jpaReportView;
 	private JdbcReportView jdbcReportView;
+	private JpaTransactionDao jpaTransactionDao;
 
 	@Autowired
 	public void setJdbcProductsDao(JdbcProductsDao jdbcProductDao) {
@@ -53,12 +58,17 @@ public class Bazydanych2017ApplicationTests {
 		this.jdbcReportView = jdbcReportView;
 	}
 
+	@Autowired
+	public void setJpaTransactionDao(JpaTransactionDao jpaTransactionDao) {
+		this.jpaTransactionDao = jpaTransactionDao;
+	}
+
 	@Test
 	public void contextLoads() {
 	}
 
-	//test select
 	@Test
+	@Transactional
 	public void checkIfQueryFindByProductnameIsEqualsInJpaJdbc(){
 
 		Products jdbcChai = jdbcProductDao.findProductByProductName("Chai");
@@ -68,6 +78,7 @@ public class Bazydanych2017ApplicationTests {
 	}
 
 	@Test
+	@Transactional
 	public void checkIfQueryFindAllSortedIsEqualsInJpaJdbc(){
 
 		List<Products> jdbcProducts = jdbcProductDao.listProductsSortedByProductName();
@@ -84,7 +95,7 @@ public class Bazydanych2017ApplicationTests {
 
 		assertThat(jpaReports).isEqualTo(jdbcReports);
 	}
-	//test update
+
 	@Test
 	public void checkIfNumberOfChangesEqualsInJpaJdbc(){
 		//given
@@ -93,10 +104,21 @@ public class Bazydanych2017ApplicationTests {
 		//then
 		assertThat(jdbcChangedBeverages).isEqualTo(jpaChangedBeverages);
 	}
-	//todo: test insert
 
-
-
-	//todo: test delete
+	@Test
+	@Transactional
+	public void checkIfCreatedProductsEqualsExistingProductInJpaJdbc(){
+		//given
+		Products existingProduct = jpaProductRepository.findByProductid(500L);
+		//when
+		Long jdbcIdCreatedProduct = jdbcProductDao.createNewProduct("Dethrein", "Exotic Liquids", "Spice food", "10 boxes x 20 bags", 10D, 50L, 10L, 10L, false);
+		Long jpaIdCreatedProduct = jpaTransactionDao.createNewProduct("Dethrein", "Exotic Liquids", "Spice food", "10 boxes x 20 bags", 10D, 50L, 10L, 10L, false);
+		Products jpaCreatedProduct = jpaProductRepository.findByProductid(jpaIdCreatedProduct);
+		Products jdbcCreatedProduct = jpaProductRepository.findByProductid(jdbcIdCreatedProduct);
+		//then
+		assertThat(jpaCreatedProduct).isEqualTo(existingProduct);
+		assertThat(jdbcCreatedProduct).isEqualTo(existingProduct);
+		assertThat(jpaCreatedProduct).isEqualTo(jdbcCreatedProduct);
+	}
 
 }

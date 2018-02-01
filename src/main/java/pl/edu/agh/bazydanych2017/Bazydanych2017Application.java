@@ -44,31 +44,25 @@ public class Bazydanych2017Application implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		int numberOfTest = 100;
-		//todo: refaktoryzacja interfejsów i klas jpadao i jdbcdao
-		//todo: log4j patern do lebszego wyświetlania wyników testu
-		//Opisane
-		logger.info("JPA   "+ numberOfTest +"X test listProductsSortedByProductName        "+ (double) timeCounter.avarageTimeJPAListProductsSortedByProductName(numberOfTest)/1000000000.0d);
-		logger.info("JDBC  "+ numberOfTest +"X test listProductsSortedByProductName        "+ (double) timeCounter.avarageTimeJDBCListProductsSortedByProductName(numberOfTest)/1000000000.0d);
-		//do poprawy
-		logger.info("JPA   "+ numberOfTest +"X test findProductByProductName               "+ (double) timeCounter.avarageTimeJPAFindProductByProductName(numberOfTest,"Chai")/1000000000.0d);
-		logger.info("JDBC  "+ numberOfTest +"X test findProductByProductName               "+ (double) timeCounter.avarageTimeJDBCFindProductByProductName(numberOfTest,"Chai")/1000000000.0d);
+		int numberOfTest = 1;
 
-		logger.info("JPA   "+ numberOfTest +"X test Report                                 "+ (double) timeCounter.avarageTimeJPAReport(numberOfTest)/ 1000000000.0d);
-		logger.info("JDBC  "+ numberOfTest +"X test Report                                 "+ (double) timeCounter.avarageTimeJDBCReport(numberOfTest)/ 1000000000.0d);
+		logger.info("JPA   "+ numberOfTest +"X test listProductsSortedByProductName        "+ timeCounter.avarageTimeJPAListProductsSortedByProductName(numberOfTest) /1000000000.0d);
+		logger.info("JDBC  "+ numberOfTest +"X test listProductsSortedByProductName        "+ timeCounter.avarageTimeJDBCListProductsSortedByProductName(numberOfTest) /1000000000.0d);
 
-		logger.info("JPA   "+ numberOfTest +"X test changeProductsUnitPriceForCategoryname "+ (double) timeCounter.avarageTimeJPAChangeProductsUnitPriceForCategoryname(numberOfTest,"Beverages", 10.0)/ 1000000000.0d);
-		logger.info("JDBC  "+ numberOfTest +"X test changeProductsUnitPriceForCategoryname "+ (double) timeCounter.avarageTimeJDBCChangeProductsUnitPriceForCategoryname(numberOfTest,"Beverages", 10.0)/ 1000000000.0d);
+		logger.info("JPA   "+ numberOfTest +"X test findProductByProductName               "+ timeCounter.avarageTimeJPAFindProductByProductName(numberOfTest,"Chai") /1000000000.0d);
+		logger.info("JDBC  "+ numberOfTest +"X test findProductByProductName               "+ timeCounter.avarageTimeJDBCFindProductByProductName(numberOfTest,"Chai") /1000000000.0d);
 
-	//	jpaTransactionDao.changeExistingCategory("IZ3", "IZ2", "Nowa kaegoria WZ");
-	//	jdbcTransactionDao.changeExistingCategory("IZ3", "IZ2", "Nowa kaegoria WZ");
+		logger.info("JPA   "+ numberOfTest +"X test Report                                 "+ timeCounter.avarageTimeJPAReport(numberOfTest) / 1000000000.0d);
+		logger.info("JDBC  "+ numberOfTest +"X test Report                                 "+ timeCounter.avarageTimeJDBCReport(numberOfTest) / 1000000000.0d);
 
-		logger.info("JPA   "+ numberOfTest +"X test createNewProduct                       "+ (double) timeCounter.avarageTimeJPACreateNewProduct(numberOfTest,"Dethrein", "Exotic Liquids","Spice food","10 boxes x 20 bags", 10D,50L, 10L, 10L, false)/ 1000000000.0d);
-		logger.info("JDBC  "+ numberOfTest +"X test createNewProduct                       "+ (double) timeCounter.avarageTimeJDBCCreateNewProduct(numberOfTest,"Dethrein", "Exotic Liquids","Spice food","10 boxes x 20 bags", 10D,50L, 10L, 10L, false)/ 1000000000.0d);
+		logger.info("JPA   "+ numberOfTest +"X test changeProductsUnitPriceForCategoryname "+ timeCounter.avarageTimeJPAChangeProductsUnitPriceForCategoryname(numberOfTest,"Beverages", 10.0) / 1000000000.0d);
+		logger.info("JDBC  "+ numberOfTest +"X test changeProductsUnitPriceForCategoryname "+ timeCounter.avarageTimeJDBCChangeProductsUnitPriceForCategoryname(numberOfTest,"Beverages", 10.0) / 1000000000.0d);
 
-		//todo: dokumentacja
-		//todo: transakcja która nie będzie generować błędu zamówienie - to sam sobie dodałem ale może być jak starczy czasu
-//todo: uporządkuj interfejsy
+		//jpaTransactionDao.changeExistingCategory("IZ3", "IZ2", "Nowa kaegoria WZ");
+		//jdbcTransactionDao.changeExistingCategory("IZ3", "IZ2", "Nowa kaegoria WZ");
+
+		logger.info("JPA   "+ numberOfTest +"X test createNewProduct                       "+ timeCounter.avarageTimeJPACreateNewProduct(numberOfTest,"Dethrein", "Exotic Liquids","Spice food","10 boxes x 20 bags", 10D,50L, 10L, 10L, false) / 1000000000.0d);
+		logger.info("JDBC  "+ numberOfTest +"X test createNewProduct                       "+ timeCounter.avarageTimeJDBCCreateNewProduct(numberOfTest,"Dethrein", "Exotic Liquids","Spice food","10 boxes x 20 bags", 10D,50L, 10L, 10L, false) / 1000000000.0d);
 
 	}
 }

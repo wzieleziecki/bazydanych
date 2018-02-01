@@ -14,7 +14,6 @@ import java.util.Arrays;
 @Component
 public class TimeCounterImpl implements TimeCounter {
 
-    //todo: uporządkować interfejsy
     private JpaProductsDao jpaProductsDao;
     private JdbcProductsDao jdbcProductsDao;
     private JpaReportView jpaReportView;
@@ -29,8 +28,6 @@ public class TimeCounterImpl implements TimeCounter {
         this.jpaTransactionDao = jpaTransactionDao;
     }
 
-    //ListProductsSortedByProductName#############################################
-    //test potwierdzający że zapytanią są identyczne - checkIfQueryFindAllSortedIsEqualsInJpaJdbc
     @Override
     public Double avarageTimeJPAListProductsSortedByProductName(int numberOfTest){
         long[] time = new long [numberOfTest];
@@ -40,12 +37,9 @@ public class TimeCounterImpl implements TimeCounter {
                 jpaProductsDao.listProductsSortedByProductName();
             long EndTime = System.nanoTime();
             long output = EndTime - StartTime;
-            //todo: przerobić na logowanie
             time[i] = output;
-           // System.out.println(time[i]);
         }
-        Double avg = Arrays.stream(time).average().getAsDouble();
-        return avg;
+        return Arrays.stream(time).average().getAsDouble();
     }
 
 
@@ -59,26 +53,20 @@ public class TimeCounterImpl implements TimeCounter {
              long output = EndTime - StartTime;
              time[i] = output;
          }
-         Double avg = Arrays.stream(time).average().getAsDouble();
-         return avg;
+         return Arrays.stream(time).average().getAsDouble();
      }
-    //ListProductsSortedByProductName#############################################
 
-    //FindProductByProductName####################################################
-    //test potwierdzający że zapytanią są identyczne - checkIfQueryFindByProductnameIsEqualsInJpaJdbc
     @Override
     public Double avarageTimeJPAFindProductByProductName(int numberOfTest, String productname) {
         long[] time = new long[numberOfTest];
         for (int i = 0; i < numberOfTest; i++) {
             long StartTime = System.nanoTime();
-            //todo: dlaczego pracuję na implementacji a nie interfejsie
-            jpaProductsDao.timeFindProductByProductName(productname);
+            jpaProductsDao.findProductByProductName(productname);
             long EndTime = System.nanoTime();
             long output = EndTime - StartTime;
             time[i] = output;
         }
-        Double avg = Arrays.stream(time).average().getAsDouble();
-        return avg;
+        return Arrays.stream(time).average().getAsDouble();
     }
 
     @Override
@@ -86,18 +74,14 @@ public class TimeCounterImpl implements TimeCounter {
         long[] time = new long[numberOfTest];
         for (int i = 0; i < numberOfTest; i++) {
             long StartTime = System.nanoTime();
-            jdbcProductsDao.timeFindProductByProductName(productname);
+            jdbcProductsDao.findProductByProductName(productname);
             long EndTime = System.nanoTime();
             long output = EndTime - StartTime;
             time[i] = output;
         }
-        Double avg = Arrays.stream(time).average().getAsDouble();
-        return avg;
+        return Arrays.stream(time).average().getAsDouble();
     }
-    //FindProductByProductName####################################################
 
-    //DetailInformationForInvoicePurpose##########################################
-    //test potwierdzający że zapytanią są identyczne - checkIfQueryReportIsEqualsInJpaJdbc przechodzi po normalnym uruchomieniu aplikacji
     @Override
     public Double avarageTimeJDBCReport(int numberOfTest) {
         long[] time = new long[numberOfTest];
@@ -108,8 +92,7 @@ public class TimeCounterImpl implements TimeCounter {
             long output = EndTime - StartTime;
             time[i] = output;
         }
-        Double avg = Arrays.stream(time).average().getAsDouble();
-        return avg;
+        return Arrays.stream(time).average().getAsDouble();
     }
 
     @Override
@@ -122,25 +105,20 @@ public class TimeCounterImpl implements TimeCounter {
             long output = EndTime - StartTime;
             time[i] = output;
         }
-        Double avg = Arrays.stream(time).average().getAsDouble();
-        return avg;
+        return Arrays.stream(time).average().getAsDouble();
     }
-    //DetailInformationForInvoicePurpose##########################################
 
-    //ChangeProductsUnitPriceForCategoryname######################################
-    //todo: brak testu potwierdzającego że to działa tak samo w JDBC i JPA
     @Override
     public Double avarageTimeJDBCChangeProductsUnitPriceForCategoryname(int numberOfTest, String categoryname, Double addToUnitPrice) {
         long[] time = new long[numberOfTest];
         for (int i = 0; i < numberOfTest; i++) {
             long StartTime = System.nanoTime();
-            jdbcProductsDao.timeChangeProductsUnitPriceForCategoryname(categoryname, addToUnitPrice);
+            jdbcProductsDao.changeProductsUnitPriceForCategoryname(categoryname, addToUnitPrice);
             long EndTime = System.nanoTime();
             long output = EndTime - StartTime;
             time[i] = output;
         }
-        Double avg = Arrays.stream(time).average().getAsDouble();
-        return avg;
+        return Arrays.stream(time).average().getAsDouble();
     }
 
     @Override
@@ -148,29 +126,25 @@ public class TimeCounterImpl implements TimeCounter {
         long[] time = new long[numberOfTest];
         for (int i = 0; i < numberOfTest; i++) {
             long StartTime = System.nanoTime();
-            jpaProductsDao.timeChangeProductsUnitPriceForCategoryname(categoryname, addToUnitPrice);
+            jpaProductsDao.changeProductsUnitPriceForCategoryname(categoryname, addToUnitPrice);
             long EndTime = System.nanoTime();
             long output = EndTime - StartTime;
             time[i] = output;
         }
-        Double avg = Arrays.stream(time).average().getAsDouble();
-        return avg;
+        return Arrays.stream(time).average().getAsDouble();
     }
-    //ChangeProductsUnitPriceForCategoryname######################################
 
-    //CreateNewProduct############################################################
     @Override
     public Double avarageTimeJPACreateNewProduct(int numberOfTest, String productname, String companyname, String categoryname, String quantityperunit, Double unitprice, Long unitsinstock, Long unitsonorder, Long reorderlevel, boolean discontinued) {
         long[] time = new long[numberOfTest];
         for (int i = 0; i < numberOfTest; i++) {
             long StartTime = System.nanoTime();
-            jpaTransactionDao.timeCreateNewProduct( productname, companyname, categoryname, quantityperunit, unitprice, unitsinstock, unitsonorder, reorderlevel, discontinued);
+            jpaTransactionDao.createNewProduct( productname, companyname, categoryname, quantityperunit, unitprice, unitsinstock, unitsonorder, reorderlevel, discontinued);
             long EndTime = System.nanoTime();
             long output = EndTime - StartTime;
             time[i] = output;
         }
-        Double avg = Arrays.stream(time).average().getAsDouble();
-        return avg;
+        return Arrays.stream(time).average().getAsDouble();
     }
 
     @Override
@@ -178,14 +152,12 @@ public class TimeCounterImpl implements TimeCounter {
         long[] time = new long[numberOfTest];
         for (int i = 0; i < numberOfTest; i++) {
             long StartTime = System.nanoTime();
-            jdbcProductsDao.timeCreateNewProduct( productname, companyname, categoryname, quantityperunit, unitprice, unitsinstock, unitsonorder, reorderlevel, discontinued);
+            jdbcProductsDao.createNewProduct( productname, companyname, categoryname, quantityperunit, unitprice, unitsinstock, unitsonorder, reorderlevel, discontinued);
             long EndTime = System.nanoTime();
             long output = EndTime - StartTime;
             time[i] = output;
         }
-        Double avg = Arrays.stream(time).average().getAsDouble();
-        return avg;
+        return Arrays.stream(time).average().getAsDouble();
     }
-    //createNewProduct############################################################
 
 }

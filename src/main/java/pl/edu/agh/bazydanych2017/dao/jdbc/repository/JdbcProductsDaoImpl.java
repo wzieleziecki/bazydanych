@@ -1,12 +1,13 @@
 package pl.edu.agh.bazydanych2017.dao.jdbc.repository;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.support.TransactionTemplate;
 import pl.edu.agh.bazydanych2017.dao.jdbc.JdbcProductsDao;
@@ -22,7 +23,6 @@ public class JdbcProductsDaoImpl implements JdbcProductsDao {
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private TransactionTemplate transactionTemplate;
-    private final Logger logger = Logger.getLogger(JdbcProductsDaoImpl.class);
 
     @Autowired
     public JdbcProductsDaoImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate, TransactionTemplate transactionTemplate) {
@@ -56,21 +56,7 @@ public class JdbcProductsDaoImpl implements JdbcProductsDao {
         String sql = "SELECT ProductID, ProductName, SupplierID, categoryname AS CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued  FROM northwind.products \n" +
                 "JOIN categories ON categories.CategoryID = products.CategoryID \n" +
                 "WHERE ProductName = ?";
-        long StartTime = System.nanoTime();
-        Products product = jdbcTemplate.queryForObject(sql, productsRowMapper, productname);
-        long EndTime = System.nanoTime();
-        long output = EndTime - StartTime;
-        logger.info("JDBC find by product name - time "+ output);
-        return product;
-    }
-
-    @Override
-    public Products timeFindProductByProductName(String productname) {
-        String sql = "SELECT ProductID, ProductName, SupplierID, categoryname AS CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued  FROM northwind.products \n" +
-                "JOIN categories ON categories.CategoryID = products.CategoryID \n" +
-                "WHERE ProductName = ?";
-        Products products = jdbcTemplate.queryForObject(sql, productsRowMapper, productname);
-        return products;
+        return jdbcTemplate.queryForObject(sql, productsRowMapper, productname);
     }
 
     @Override
@@ -78,47 +64,25 @@ public class JdbcProductsDaoImpl implements JdbcProductsDao {
         String sql = "SELECT ProductID, ProductName, SupplierID, categoryname AS CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued  FROM northwind.products \n" +
                 "JOIN categories ON categories.CategoryID = products.CategoryID \n" +
                 "WHERE ProductName = ?";
-        Products products = jdbcTemplate.queryForObject(sql, productsRowMapper, productname);
-        return products;
+        return jdbcTemplate.queryForObject(sql, productsRowMapper, productname);
     }
-//    @Override
-//    public List<Products> listProductsSortedByProductName(){
-//        String sql = "SELECT * FROM products order by ProductName asc";
-//        long StartTime = System.nanoTime();
-//        List<Products> listSortedProducts = jdbcTemplate.query(sql, productsRowMapper);
-//        long EndTime = System.nanoTime();
-//        long output = EndTime - StartTime;
-//        logger.info("JDBC list Sorted Products - time "+ output / 1000000000.0);
-//        return listSortedProducts;
-//        }
-//todo: usunąć komentarze
+
     @Override
     public List<Products>listProductsSortedByProductName() {
         String sql = "SELECT * FROM products order by ProductName asc";
-        List<Products> productList = jdbcTemplate.query(sql, productsRowMapper);
-        return productList;
+        return jdbcTemplate.query(sql, productsRowMapper);
     }
 
     @Override
     public int changeProductsUnitPriceForCategoryname(String categroryname, Double addToUnitPrice) {
         String sql = "UPDATE Products SET UnitPrice = (UnitPrice + :addToUnitPrice) WHERE CategoryID = (SELECT categories.CategoryID FROM categories WHERE categories.CategoryName = :categroryname)";
         SqlParameterSource parameter = new MapSqlParameterSource("addToUnitPrice",addToUnitPrice).addValue("categroryname",categroryname);
-        long StartTime = System.nanoTime();
-        int update = namedParameterJdbcTemplate.update(sql, parameter);
-        long EndTime = System.nanoTime();
-        long output = EndTime - StartTime;
-        logger.info("JDBC change unit price for category name - time "+ output);
-        return update;
+        return namedParameterJdbcTemplate.update(sql, parameter);
     }
+
     @Override
-    public int timeChangeProductsUnitPriceForCategoryname(String categroryname, Double addToUnitPrice) {
-        String sql = "UPDATE Products SET UnitPrice = (UnitPrice + :addToUnitPrice) WHERE CategoryID = (SELECT categories.CategoryID FROM categories WHERE categories.CategoryName = :categroryname)";
-        SqlParameterSource parameter = new MapSqlParameterSource("addToUnitPrice",addToUnitPrice).addValue("categroryname",categroryname);
-        int update = namedParameterJdbcTemplate.update(sql, parameter);
-        return update;
-    }
-    @Override
-    public int createNewProduct(String productname, String companyname, String categoryname, String quantityperunit, Double unitprice, Long unitsinstock, Long unitsonorder, Long reorderlevel, boolean discontinued) {
+    public Long createNewProduct(String productname, String companyname, String categoryname, String quantityperunit, Double unitprice, Long unitsinstock, Long unitsonorder, Long reorderlevel, boolean discontinued) {
+        KeyHolder holder = new GeneratedKeyHolder();
         String sql = ("INSERT INTO " +
                 "products \n" +
                 "(ProductName, \n" +
@@ -132,50 +96,8 @@ public class JdbcProductsDaoImpl implements JdbcProductsDao {
                 "Discontinued ) \n" +
                 "VALUES \n" +
                 "(:productname, \n" +
-                "(SELECT max(supplierid) FROM northwind.suppliers WHERE CompanyName = :companyname) , \n" +
-                "(SELECT max(categoryid) FROM NORTHWINd.categories WHERE CategoryName = :categoryname), \n" +
-                ":quantityperunit, \n" +
-                ":unitprice, \n" +
-                ":unitsinstock, \n" +
-                ":unitsonorder,\n" +
-                ":reorderlevel, \n" +
-                ":discontinued)");
-
-        SqlParameterSource parameter = new MapSqlParameterSource(
-                          "productname",productname)
-                .addValue("companyname",companyname)
-                .addValue("categoryname", categoryname)
-                .addValue("quantityperunit",quantityperunit)
-                .addValue("unitprice", unitprice)
-                .addValue("unitsinstock", unitsinstock)
-                .addValue("unitsonorder", unitsonorder)
-                .addValue("reorderlevel", reorderlevel)
-                .addValue("discontinued", discontinued);
-        long StartTime = System.nanoTime();
-        int update = namedParameterJdbcTemplate.update(sql, parameter);
-        long EndTime = System.nanoTime();
-        long output = EndTime - StartTime;
-        logger.info("JDBC stworzenie nowego produktu Trnsakcja - time"+ output);
-        return update;
-    }
-
-    @Override
-    public int timeCreateNewProduct(String productname, String companyname, String categoryname, String quantityperunit, Double unitprice, Long unitsinstock, Long unitsonorder, Long reorderlevel, boolean discontinued) {
-        String sql = ("INSERT INTO " +
-                "products \n" +
-                "(ProductName, \n" +
-                "SupplierID, \n" +
-                "CategoryID, \n" +
-                "QuantityPerUnit, \n" +
-                "UnitPrice, \n" +
-                "UnitsInStock,\n" +
-                "UnitsOnOrder, \n" +
-                "ReorderLevel, \n" +
-                "Discontinued ) \n" +
-                "VALUES \n" +
-                "(:productname, \n" +
-                "(SELECT max(supplierid) FROM northwind.suppliers WHERE CompanyName = :companyname) , \n" +
-                "(SELECT max(categoryid) FROM NORTHWINd.categories WHERE CategoryName = :categoryname), \n" +
+                "(SELECT supplierid FROM northwind.suppliers WHERE CompanyName = :companyname) , \n" +
+                "(SELECT categoryid FROM NORTHWINd.categories WHERE CategoryName = :categoryname), \n" +
                 ":quantityperunit, \n" +
                 ":unitprice, \n" +
                 ":unitsinstock, \n" +
@@ -193,8 +115,9 @@ public class JdbcProductsDaoImpl implements JdbcProductsDao {
                 .addValue("unitsonorder", unitsonorder)
                 .addValue("reorderlevel", reorderlevel)
                 .addValue("discontinued", discontinued);
-                int update = namedParameterJdbcTemplate.update(sql, parameter);
-        return update;
+        namedParameterJdbcTemplate.update(sql, parameter, holder);
+        Number key = holder.getKey();
+        return key.longValue();
     }
 
     @Override
