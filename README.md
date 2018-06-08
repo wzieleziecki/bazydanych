@@ -13,16 +13,3 @@ The sample database used is the Northwind DB.
 
 The technologies are: Java with Spring and Hibernate (JdbcTemplate, Spring Data)
 DBMS: MySQL
-
-### How do I get set up? ###
-todo
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Who do I talk to? ###
-
-Authors: Piotr Szewczyk and Wojciech Zieleziecki
